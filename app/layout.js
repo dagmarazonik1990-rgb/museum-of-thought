@@ -2,12 +2,12 @@ import "./globals.css";
 
 export const metadata = {
   title: "Museum of Thought",
-  description: "Interactive thought space"
+  description: "A premium thought-mapping and reflection space."
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pl">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

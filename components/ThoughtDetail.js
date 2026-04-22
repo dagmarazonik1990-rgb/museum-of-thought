@@ -14,7 +14,7 @@ export default function ThoughtDetail({
       <div className="mot-empty-panel">
         <p className="mot-empty-title">No thought selected</p>
         <p className="mot-empty-copy">
-          Tap any orb in the space to open its room and reveal meaning around it.
+          Select an orb to open its thought room, review links, and generate insight.
         </p>
       </div>
     );
@@ -23,7 +23,7 @@ export default function ThoughtDetail({
   return (
     <div className="mot-detail">
       <div className="mot-thought-hero">
-        <p className="mot-detail-label">Thought</p>
+        <p className="mot-detail-label">Current thought</p>
         <h3 className="mot-thought-text">{thought.text}</h3>
 
         <div className="mot-pill-row">
@@ -36,7 +36,7 @@ export default function ThoughtDetail({
 
       <div className="mot-detail-actions">
         <button className="mot-btn mot-btn-primary" onClick={onAnalyze} disabled={analyzing}>
-          {analyzing ? "Analyzing..." : "Analyze deeper"}
+          {analyzing ? "Analyzing..." : "Generate insight"}
         </button>
 
         <button className="mot-btn mot-btn-danger" onClick={onDelete}>
@@ -48,7 +48,7 @@ export default function ThoughtDetail({
         <p className="mot-detail-label">Connected sub-thoughts</p>
 
         {children.length === 0 ? (
-          <p className="mot-muted">No sub-thoughts yet. Expand this thought to deepen the room.</p>
+          <p className="mot-muted">No sub-thoughts yet. Add one to expand this thread.</p>
         ) : (
           <div className="mot-chip-list">
             {children.map((child) => (
@@ -69,11 +69,14 @@ export default function ThoughtDetail({
 
         {!insight ? (
           <p className="mot-muted">
-            No insight yet. Run analysis to reveal tension, patterns and possible direction.
+            No insight yet. Run analysis to reveal summary, emotional tone, friction points, patterns, and next-step prompts.
           </p>
         ) : (
           <div className="mot-insight-card">
-            <p className="mot-insight-summary">{insight.summary}</p>
+            <div className="mot-insight-summary-wrap">
+              <p className="mot-detail-label">Summary</p>
+              <p className="mot-insight-summary">{insight.summary}</p>
+            </div>
 
             <div className="mot-metadata-grid">
               <div className="mot-meta-box">
@@ -108,7 +111,7 @@ function InsightList({ title, items }) {
           ))}
         </ul>
       ) : (
-        <p className="mot-muted">No items.</p>
+        <p className="mot-muted">No items yet.</p>
       )}
     </div>
   );

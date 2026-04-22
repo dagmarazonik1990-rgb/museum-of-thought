@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import ThoughtSpace from "../components/ThoughtSpace";
 import ThoughtDetail from "../components/ThoughtDetail";
@@ -19,9 +20,9 @@ import {
 } from "../lib/thought-utils";
 
 const ANALYSIS_STATES = [
-  "Analyzing hidden patterns...",
-  "Checking emotional tension...",
-  "Structuring your thought..."
+  "Reading emotional texture...",
+  "Tracing hidden patterns...",
+  "Composing structured insight..."
 ];
 
 export default function HomePage() {
@@ -30,7 +31,7 @@ export default function HomePage() {
   const [selectedThoughtId, setSelectedThoughtId] = useState(null);
   const [showReflection, setShowReflection] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [status, setStatus] = useState("Drop a thought...");
+  const [status, setStatus] = useState("Drop the first thought.");
   const [spaceLoaded, setSpaceLoaded] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [analysisStep, setAnalysisStep] = useState(0);
@@ -41,10 +42,10 @@ export default function HomePage() {
     setSpaceLoaded(true);
 
     if (loaded.thoughts.length === 0) {
-      setStatus("Start by writing what is on your mind.");
+      setStatus("Drop the first thought. Do not organize it yet.");
       setShowWelcome(true);
     } else {
-      setStatus("Your thought space is alive.");
+      setStatus("Your map is active.");
       setShowWelcome(false);
     }
   }, []);
@@ -103,7 +104,7 @@ export default function HomePage() {
     setSelectedThoughtId(newThought.id);
     setInput("");
     setShowWelcome(false);
-    setStatus(parentId ? "Sub-thought created." : "Thought created.");
+    setStatus(parentId ? "Sub-thought added." : "Thought added.");
   }
 
   function handleSelectThought(id) {
@@ -152,9 +153,9 @@ export default function HomePage() {
         }
       }));
 
-      setStatus("Analysis complete.");
+      setStatus("Insight ready.");
     } catch (error) {
-      setStatus("AI unavailable. You can still build the map.");
+      setStatus("AI is unavailable right now. Mapping still works.");
       console.error(error);
     } finally {
       setAnalyzing(false);
@@ -199,14 +200,14 @@ export default function HomePage() {
 
     if (filteredThoughts.length === 0) {
       setShowWelcome(true);
-      setStatus("Start by writing what is on your mind.");
+      setStatus("Drop the first thought. Do not organize it yet.");
     } else {
       setStatus("Thought removed.");
     }
   }
 
   function handleResetAll() {
-    const confirmed = window.confirm("Delete the whole thought space?");
+    const confirmed = window.confirm("Delete the entire thought map?");
     if (!confirmed) return;
 
     const fresh = createInitialState();
@@ -214,13 +215,13 @@ export default function HomePage() {
     setSelectedThoughtId(null);
     setInput("");
     setShowWelcome(true);
-    setStatus("Thought space cleared.");
+    setStatus("Thought map cleared.");
   }
 
   const heroCopy =
     appState.thoughts.length === 0
-      ? "A private space for mapping thoughts, tension, desire and clarity."
-      : "Turn raw thoughts into structure, reflection and insight.";
+      ? "A private cognitive canvas for mapping thoughts, relationships, tension, and clarity."
+      : "Shape raw thoughts into connected structure, reflection, and perspective.";
 
   return (
     <main className="mot-shell">
@@ -232,7 +233,7 @@ export default function HomePage() {
       <header className="mot-topbar">
         <div className="mot-hero-copy">
           <p className="mot-kicker">Museum of Thought</p>
-          <h1 className="mot-title">Your thought space</h1>
+          <h1 className="mot-title">Map what your mind is holding.</h1>
           <p className="mot-subtitle">{heroCopy}</p>
           <p className="mot-statusline">
             {analyzing ? ANALYSIS_STATES[analysisStep] : status}
@@ -244,11 +245,11 @@ export default function HomePage() {
             className="mot-btn mot-btn-ghost"
             onClick={() => setShowReflection((prev) => !prev)}
           >
-            {showReflection ? "Close reflection" : "Reflection"}
+            {showReflection ? "Close reflection" : "Open reflection"}
           </button>
 
           <button className="mot-btn mot-btn-danger" onClick={handleResetAll}>
-            Reset
+            Reset map
           </button>
         </div>
       </header>
@@ -260,20 +261,23 @@ export default function HomePage() {
             <p className="mot-label">Start here</p>
             <h2 className="mot-welcome-title">Drop the first thought. Do not organize it yet.</h2>
             <p className="mot-welcome-text">
-              Write one sentence. The space will begin to connect meaning, tension and direction around it.
+              Write one honest sentence. Connections can emerge afterward.
             </p>
           </div>
         </section>
       ) : null}
 
       <section className="mot-composer">
+        <label className="mot-label" htmlFor="thought-input">Thought input</label>
         <textarea
+          id="thought-input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Drop a thought..."
+          placeholder="Example: I keep postponing an important decision because I want certainty."
           className="mot-textarea"
           rows={3}
         />
+        <p className="mot-input-hint">Example thought: “I want progress, but I keep waiting for perfect timing.”</p>
 
         <div className="mot-composer-actions">
           <button
@@ -357,9 +361,9 @@ export default function HomePage() {
           <span>Museum of Thought © 2026</span>
         </div>
         <div className="mot-footer-links">
-          <span>Privacy</span>
-          <span>Terms</span>
-          <span>Contact</span>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/contact">Contact</Link>
         </div>
       </footer>
     </main>

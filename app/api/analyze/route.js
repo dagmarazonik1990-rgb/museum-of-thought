@@ -1,5 +1,25 @@
 import { NextResponse } from "next/server";
 
+const FALLBACK_INSIGHT = {
+  summary: "Analysis is temporarily unavailable. Continue mapping your thoughts and revisit later.",
+  type: "unclassified",
+  emotion: "uncertain",
+  conflicts: [],
+  patterns: [],
+  suggestions: ["Continue expanding the map to surface clearer patterns."]
+};
+
+function sanitizeInsight(payload) {
+  return {
+    summary: typeof payload?.summary === "string" ? payload.summary : FALLBACK_INSIGHT.summary,
+    type: typeof payload?.type === "string" ? payload.type : "unclassified",
+    emotion: typeof payload?.emotion === "string" ? payload.emotion : "uncertain",
+    conflicts: Array.isArray(payload?.conflicts) ? payload.conflicts : [],
+    patterns: Array.isArray(payload?.patterns) ? payload.patterns : [],
+    suggestions: Array.isArray(payload?.suggestions) ? payload.suggestions : []
+  };
+}
+
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -16,14 +36,12 @@ export async function POST(req) {
 
     if (!apiKey) {
       return NextResponse.json({
-        summary: "AI key missing. Local mode is still working.",
+        summary: "AI key missing. Local thought mapping is still available.",
         type: "unclassified",
         emotion: "uncertain",
         conflicts: [],
         patterns: [],
-        suggestions: [
-          "Add OPENAI_API_KEY in Vercel or .env.local to enable AI analysis."
-        ]
+        suggestions: ["Add OPENAI_API_KEY in Vercel or .env.local to enable AI insight."]
       });
     }
 
@@ -40,8 +58,7 @@ Analyze the user's thought and return ONLY valid JSON with this exact shape:
   "suggestions": ["string"]
 }
 
-Be insightful, concise, and non-clinical.
-Do not moralize.
+Be concise, non-clinical, and practical.
 Do not add markdown.
 Thought:
 ${text}
@@ -74,23 +91,20 @@ ${text}
     const content = data?.choices?.[0]?.message?.content;
 
     if (!response.ok || !content) {
-      console.error(data);
+      console.error("OpenAI response error", data);
       return NextResponse.json(
         { error: "OpenAI request failed." },
-        { status: 500 }
+        { status: 502 }
       );
     }
 
-    const parsed = JSON.parse(content);
-
-    return NextResponse.json({
-      summary: parsed.summary || "",
-      type: parsed.type || "unclassified",
-      emotion: parsed.emotion || "uncertain",
-      conflicts: Array.isArray(parsed.conflicts) ? parsed.conflicts : [],
-      patterns: Array.isArray(parsed.patterns) ? parsed.patterns : [],
-      suggestions: Array.isArray(parsed.suggestions) ? parsed.suggestions : []
-    });
+    try {
+      const parsed = JSON.parse(content);
+      return NextResponse.json(sanitizeInsight(parsed));
+    } catch (parseError) {
+      console.error("Failed to parse model output", parseError, content);
+      return NextResponse.json(sanitizeInsight(FALLBACK_INSIGHT));
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json(

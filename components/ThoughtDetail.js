@@ -14,7 +14,7 @@ export default function ThoughtDetail({
       <div className="mot-empty-panel">
         <p className="mot-empty-title">No thought selected</p>
         <p className="mot-empty-copy">
-          Tap any orb in the space to open its room.
+          Tap any orb in the space to open its room and reveal meaning around it.
         </p>
       </div>
     );
@@ -48,7 +48,7 @@ export default function ThoughtDetail({
         <p className="mot-detail-label">Connected sub-thoughts</p>
 
         {children.length === 0 ? (
-          <p className="mot-muted">No sub-thoughts yet.</p>
+          <p className="mot-muted">No sub-thoughts yet. Expand this thought to deepen the room.</p>
         ) : (
           <div className="mot-chip-list">
             {children.map((child) => (
@@ -69,7 +69,7 @@ export default function ThoughtDetail({
 
         {!insight ? (
           <p className="mot-muted">
-            No insight yet. Run analysis to interpret this thought.
+            No insight yet. Run analysis to reveal tension, patterns and possible direction.
           </p>
         ) : (
           <div className="mot-insight-card">

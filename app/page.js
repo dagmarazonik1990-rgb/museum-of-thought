@@ -18,6 +18,12 @@ import {
   normalizeThoughts
 } from "../lib/thought-utils";
 
+const ANALYSIS_STATES = [
+  "Analyzing hidden patterns...",
+  "Checking emotional tension...",
+  "Structuring your thought..."
+];
+
 export default function HomePage() {
   const [appState, setAppState] = useState(createInitialState());
   const [input, setInput] = useState("");
@@ -26,6 +32,8 @@ export default function HomePage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [status, setStatus] = useState("Drop a thought...");
   const [spaceLoaded, setSpaceLoaded] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [analysisStep, setAnalysisStep] = useState(0);
 
   useEffect(() => {
     const loaded = loadAppState();
@@ -33,9 +41,11 @@ export default function HomePage() {
     setSpaceLoaded(true);
 
     if (loaded.thoughts.length === 0) {
-      setStatus("Add your first thought.");
+      setStatus("Start by writing what is on your mind.");
+      setShowWelcome(true);
     } else {
       setStatus("Your thought space is alive.");
+      setShowWelcome(false);
     }
   }, []);
 
@@ -43,6 +53,19 @@ export default function HomePage() {
     if (!spaceLoaded) return;
     saveAppState(appState);
   }, [appState, spaceLoaded]);
+
+  useEffect(() => {
+    if (!analyzing) {
+      setAnalysisStep(0);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setAnalysisStep((prev) => (prev + 1) % ANALYSIS_STATES.length);
+    }, 1200);
+
+    return () => clearInterval(interval);
+  }, [analyzing]);
 
   const selectedThought = useMemo(() => {
     return getThoughtById(appState.thoughts, selectedThoughtId);
@@ -79,6 +102,7 @@ export default function HomePage() {
 
     setSelectedThoughtId(newThought.id);
     setInput("");
+    setShowWelcome(false);
     setStatus(parentId ? "Sub-thought created." : "Thought created.");
   }
 
@@ -101,7 +125,7 @@ export default function HomePage() {
     if (!thought) return;
 
     setAnalyzing(true);
-    setStatus("Analyzing thought...");
+    setStatus(ANALYSIS_STATES[0]);
 
     try {
       const response = await fetch("/api/analyze", {
@@ -173,7 +197,12 @@ export default function HomePage() {
       setSelectedThoughtId(null);
     }
 
-    setStatus("Thought removed.");
+    if (filteredThoughts.length === 0) {
+      setShowWelcome(true);
+      setStatus("Start by writing what is on your mind.");
+    } else {
+      setStatus("Thought removed.");
+    }
   }
 
   function handleResetAll() {
@@ -184,20 +213,30 @@ export default function HomePage() {
     setAppState(fresh);
     setSelectedThoughtId(null);
     setInput("");
+    setShowWelcome(true);
     setStatus("Thought space cleared.");
   }
+
+  const heroCopy =
+    appState.thoughts.length === 0
+      ? "A private space for mapping thoughts, tension, desire and clarity."
+      : "Turn raw thoughts into structure, reflection and insight.";
 
   return (
     <main className="mot-shell">
       <div className="mot-bg-grid" />
       <div className="mot-bg-glow mot-bg-glow-a" />
       <div className="mot-bg-glow mot-bg-glow-b" />
+      <div className="mot-bg-glow mot-bg-glow-c" />
 
       <header className="mot-topbar">
-        <div>
+        <div className="mot-hero-copy">
           <p className="mot-kicker">Museum of Thought</p>
           <h1 className="mot-title">Your thought space</h1>
-          <p className="mot-subtitle">{status}</p>
+          <p className="mot-subtitle">{heroCopy}</p>
+          <p className="mot-statusline">
+            {analyzing ? ANALYSIS_STATES[analysisStep] : status}
+          </p>
         </div>
 
         <div className="mot-topbar-actions">
@@ -213,6 +252,19 @@ export default function HomePage() {
           </button>
         </div>
       </header>
+
+      {showWelcome ? (
+        <section className="mot-welcome-card">
+          <div className="mot-welcome-orb" />
+          <div className="mot-welcome-copy">
+            <p className="mot-label">Start here</p>
+            <h2 className="mot-welcome-title">Drop the first thought. Do not organize it yet.</h2>
+            <p className="mot-welcome-text">
+              Write one sentence. The space will begin to connect meaning, tension and direction around it.
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       <section className="mot-composer">
         <textarea
@@ -299,6 +351,17 @@ export default function HomePage() {
           ) : null}
         </div>
       </section>
+
+      <footer className="mot-footer">
+        <div className="mot-footer-left">
+          <span>Museum of Thought © 2026</span>
+        </div>
+        <div className="mot-footer-links">
+          <span>Privacy</span>
+          <span>Terms</span>
+          <span>Contact</span>
+        </div>
+      </footer>
     </main>
   );
 }

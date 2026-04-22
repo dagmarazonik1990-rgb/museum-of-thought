@@ -57,7 +57,7 @@ a {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  padding: 24px 16px 40px;
+  padding: 24px 16px 28px;
 }
 
 .mot-bg-grid {
@@ -95,9 +95,19 @@ a {
   background: rgba(143, 120, 255, 0.2);
 }
 
+.mot-bg-glow-c {
+  width: 220px;
+  height: 220px;
+  left: 28%;
+  bottom: 140px;
+  background: rgba(255, 120, 200, 0.12);
+}
+
 .mot-topbar,
 .mot-composer,
-.mot-content-grid {
+.mot-content-grid,
+.mot-footer,
+.mot-welcome-card {
   position: relative;
   z-index: 1;
 }
@@ -106,34 +116,82 @@ a {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+}
+
+.mot-hero-copy {
+  max-width: 760px;
 }
 
 .mot-kicker {
   margin: 0 0 6px;
   color: var(--cyan);
   font-size: 13px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .mot-title {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
 }
 
 .mot-subtitle {
+  margin: 12px 0 0;
+  color: var(--soft);
+  max-width: 680px;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.mot-statusline {
   margin: 10px 0 0;
   color: var(--muted);
-  max-width: 680px;
+  font-size: 0.95rem;
 }
 
 .mot-topbar-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.mot-welcome-card {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(143,120,255,0.05));
+  border: 1px solid rgba(168, 184, 255, 0.12);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(24px);
+}
+
+.mot-welcome-orb {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95), rgba(112, 221, 255, 0.38) 22%, rgba(143, 120, 255, 0.2) 55%, transparent 74%);
+  box-shadow:
+    0 0 32px rgba(112, 221, 255, 0.28),
+    0 0 64px rgba(143, 120, 255, 0.18);
+}
+
+.mot-welcome-title {
+  margin: 0 0 8px;
+  font-size: 1.18rem;
+  line-height: 1.25;
+}
+
+.mot-welcome-text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .mot-composer {
@@ -170,12 +228,13 @@ a {
   border-radius: 999px;
   padding: 12px 16px;
   min-height: 44px;
-  transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+  transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
   color: var(--text);
 }
 
 .mot-btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
 }
 
 .mot-btn:disabled {
@@ -281,6 +340,18 @@ a {
   padding: 24px;
 }
 
+.mot-empty-space-title {
+  margin: 6px 0 8px;
+  color: var(--text);
+  font-size: 1.06rem;
+}
+
+.mot-empty-space-copy {
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.55;
+}
+
 .mot-empty-orb {
   width: 80px;
   height: 80px;
@@ -368,6 +439,7 @@ a {
 .mot-muted {
   margin: 0;
   color: var(--muted);
+  line-height: 1.55;
 }
 
 .mot-detail {
@@ -523,6 +595,23 @@ a {
   font-size: 0.8rem;
 }
 
+.mot-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding: 18px 2px 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.mot-footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 @keyframes pulseOrb {
   0%, 100% {
     transform: scale(1);
@@ -547,7 +636,7 @@ a {
 
 @media (min-width: 980px) {
   .mot-shell {
-    padding: 28px 28px 40px;
+    padding: 28px 28px 32px;
   }
 
   .mot-content-grid {
@@ -571,7 +660,8 @@ a {
   .mot-thought-hero,
   .mot-insight-card,
   .mot-reflection-anchor,
-  .mot-question-card {
+  .mot-question-card,
+  .mot-welcome-card {
     border-radius: 18px;
   }
 
@@ -586,5 +676,15 @@ a {
   .mot-orb-text {
     max-width: 140px;
     font-size: 0.78rem;
+  }
+
+  .mot-welcome-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mot-footer {
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 10px;
   }
 }

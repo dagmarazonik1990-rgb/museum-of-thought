@@ -41,10 +41,7 @@ export default function ThoughtSpace({
   function handlePointerDown(e, thoughtId) {
     e.preventDefault();
     e.stopPropagation();
-
-    setDragState({
-      thoughtId
-    });
+    setDragState({ thoughtId });
   }
 
   function handlePointerMove(e) {
@@ -82,7 +79,10 @@ export default function ThoughtSpace({
       {thoughts.length === 0 ? (
         <div className="mot-empty-space">
           <div className="mot-empty-orb" />
-          <p>Add your first thought to wake the space.</p>
+          <p className="mot-empty-space-title">The space is quiet.</p>
+          <p className="mot-empty-space-copy">
+            Start with one thought. Meaning can come later.
+          </p>
         </div>
       ) : null}
 

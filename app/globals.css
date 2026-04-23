@@ -1,18 +1,7 @@
 :root {
-  --bg: #060710;
-  --bg-2: #0b1020;
-  --panel: rgba(13, 18, 36, 0.72);
-  --panel-strong: rgba(18, 24, 46, 0.92);
-  --border: rgba(150, 176, 255, 0.14);
-  --text: #f5f7ff;
-  --muted: #a3acc7;
-  --soft: #c5cbed;
-  --cyan: #70ddff;
-  --violet: #8f78ff;
-  --pink: #ff78c8;
-  --danger: #ff6f91;
-  --success: #8de7b4;
-  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --bg: #04060d;
+  --text: #f5f8ff;
+  --muted: #a7b3d7;
 }
 
 * {
@@ -21,22 +10,11 @@
 
 html,
 body {
-  padding: 0;
   margin: 0;
-  background:
-    radial-gradient(circle at top, rgba(78, 108, 255, 0.18), transparent 28%),
-    radial-gradient(circle at 20% 80%, rgba(255, 120, 200, 0.12), transparent 22%),
-    linear-gradient(180deg, #05060d 0%, #080b14 100%);
-  color: var(--text);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
   min-height: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
 }
 
 button,
@@ -48,19 +26,18 @@ button {
   cursor: pointer;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.mot-shell {
+.mot-cosmos-root {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  padding: 24px 16px 28px;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(87, 121, 255, 0.14), transparent 28%),
+    radial-gradient(circle at 20% 20%, rgba(120, 225, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 80% 70%, rgba(180, 120, 255, 0.1), transparent 26%),
+    linear-gradient(180deg, #02040a 0%, #050914 100%);
 }
 
-.mot-bg-grid {
+.mot-cosmos-stars {
   position: absolute;
   inset: 0;
   background-image:
@@ -69,9 +46,16 @@ a {
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
   pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 30%, rgba(255, 255, 255, 0.45) 0.5px, transparent 1px),
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.42) 0.5px, transparent 1px),
+    radial-gradient(circle at 32% 74%, rgba(255, 255, 255, 0.38) 0.5px, transparent 1px),
+    radial-gradient(circle at 88% 64%, rgba(255, 255, 255, 0.36) 0.5px, transparent 1px);
+  background-size: 250px 250px, 340px 340px, 280px 280px, 310px 310px;
+  opacity: 0.8;
 }
 
-.mot-bg-glow {
+.mot-orb-space {
   position: absolute;
   border-radius: 999px;
   filter: blur(70px);
@@ -325,32 +309,33 @@ a {
   border: 1px solid rgba(168, 184, 255, 0.08);
 }
 
-.mot-space-svg {
+.mot-link-layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.mot-link-line {
-  stroke: rgba(148, 198, 255, 0.28);
-  stroke-width: 0.34;
+.mot-orb-link {
+  stroke: rgba(145, 196, 255, 0.18);
+  stroke-width: 0.22;
 }
 
-.mot-empty-space {
+.mot-cluster-glow {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  text-align: center;
-  padding: 24px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  filter: blur(34px);
+  pointer-events: none;
 }
 
-.mot-empty-space-title {
-  margin: 6px 0 8px;
-  color: var(--text);
-  font-size: 1.06rem;
+.mot-brain-orb,
+.mot-orb {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: 0;
+  padding: 0;
+  background: transparent;
 }
 
 .mot-empty-space-copy {
@@ -373,33 +358,17 @@ a {
 }
 
 .mot-orb {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  min-width: 96px;
-  max-width: 180px;
-  border: none;
-  background: transparent;
-  color: var(--text);
-  padding: 0;
+  z-index: 2;
 }
 
+.mot-brain-core,
 .mot-orb-core {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: 22px;
-  height: 22px;
-  transform: translate(-50%, -50%);
+  display: block;
   border-radius: 999px;
-  background:
-    radial-gradient(circle at 35% 35%, #ffffff 0%, #cfffff 18%, #78dcff 44%, #8f78ff 78%, rgba(143, 120, 255, 0.1) 100%);
-  box-shadow:
-    0 0 18px rgba(112, 221, 255, 0.6),
-    0 0 36px rgba(143, 120, 255, 0.28);
+  background: radial-gradient(circle at 35% 35%, #ffffff, #bbf5ff 24%, #79dfff 55%, #947eff 100%);
 }
 
-.mot-orb-ring {
-  position: absolute;
-  inset: 50% auto auto 50%;
+.mot-brain-core {
   width: 44px;
   height: 44px;
   transform: translate(-50%, -50%);
@@ -427,31 +396,8 @@ a {
 .mot-orb-selected .mot-orb-ring {
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow:
-    0 0 24px rgba(112, 221, 255, 0.35),
-    0 0 32px rgba(143, 120, 255, 0.18);
-}
-
-.mot-empty-panel {
-  padding: 26px 10px 10px;
-  color: var(--muted);
-}
-
-.mot-empty-title {
-  margin: 0 0 8px;
-  color: var(--text);
-  font-size: 1.1rem;
-}
-
-.mot-empty-copy,
-.mot-muted {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.mot-detail {
-  display: grid;
-  gap: 18px;
+    0 0 34px rgba(112, 221, 255, 0.9),
+    0 0 110px rgba(145, 126, 255, 0.68);
 }
 
 .mot-thought-hero {
@@ -474,46 +420,54 @@ a {
   margin-top: 14px;
 }
 
-.mot-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 10px;
+.mot-brain-ring,
+.mot-orb-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 999px;
-  background: rgba(143, 120, 255, 0.12);
-  border: 1px solid rgba(143, 120, 255, 0.18);
-  color: #ece7ff;
-  font-size: 0.8rem;
+  border: 1px solid rgba(151, 212, 255, 0.46);
+  animation: breathe 6.8s ease-in-out infinite;
 }
 
-.mot-detail-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.mot-brain-ring {
+  width: 112px;
+  height: 112px;
 }
 
-.mot-detail-section {
-  display: grid;
-  gap: 10px;
+.mot-orb-ring {
+  width: 36px;
+  height: 36px;
+  opacity: 0.78;
 }
 
-.mot-chip-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.mot-orb-selected .mot-orb-ring {
+  border-color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 0 24px rgba(136, 190, 255, 0.45);
 }
 
-.mot-chip {
-  border: 1px solid rgba(168, 184, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
+.mot-first-prompt {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 72px);
+  transform: translateX(-50%);
   color: var(--text);
-  border-radius: 999px;
-  padding: 10px 12px;
+  letter-spacing: 0.01em;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  opacity: 0.92;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 6px 28px rgba(0, 0, 0, 0.55);
 }
 
-.mot-insight-card {
-  display: grid;
-  gap: 14px;
-  padding: 14px;
+.mot-thought-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(560px, calc(100% - 32px));
+  transform: translate(-50%, -50%);
+  padding: 20px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(168, 184, 255, 0.08);
@@ -536,36 +490,13 @@ a {
   gap: 10px;
 }
 
-.mot-meta-box {
-  padding: 12px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(168, 184, 255, 0.06);
-}
-
-.mot-meta-title {
+.mot-overlay-label {
   display: block;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 6px;
-  font-size: 0.8rem;
-}
-
-.mot-insight-block {
-  display: grid;
-  gap: 8px;
-}
-
-.mot-list {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--soft);
-  display: grid;
-  gap: 8px;
-}
-
-.mot-reflection {
-  display: grid;
-  gap: 14px;
 }
 
 .mot-reflection-anchor {
@@ -586,21 +517,15 @@ a {
   gap: 10px;
 }
 
-.mot-question-card {
+.mot-overlay-actions {
+  margin-top: 12px;
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(168, 184, 255, 0.08);
+  gap: 8px;
+  justify-content: flex-end;
 }
 
-.mot-question-index {
-  display: inline-grid;
-  place-items: center;
-  min-width: 34px;
-  height: 34px;
+.mot-overlay-btn {
+  border: 1px solid rgba(157, 189, 255, 0.22);
   border-radius: 999px;
   background: linear-gradient(135deg, rgba(112, 221, 255, 0.18), rgba(143, 120, 255, 0.24));
   color: var(--text);
@@ -695,11 +620,11 @@ a {
   0%,
   100% {
     transform: translate(-50%, -50%) scale(1);
-    opacity: 0.72;
+    opacity: 0.68;
   }
 
   50% {
-    transform: translate(-50%, -50%) scale(1.08);
+    transform: translate(-50%, -50%) scale(1.1);
     opacity: 1;
   }
 }

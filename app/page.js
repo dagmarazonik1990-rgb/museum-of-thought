@@ -33,8 +33,8 @@ export default function HomePage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [status, setStatus] = useState("Drop the first thought.");
   const [spaceLoaded, setSpaceLoaded] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
-  const [analysisStep, setAnalysisStep] = useState(0);
+  const [composerOpen, setComposerOpen] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const loaded = loadAppState();
@@ -56,49 +56,27 @@ export default function HomePage() {
   }, [appState, spaceLoaded]);
 
   useEffect(() => {
-    if (!analyzing) {
-      setAnalysisStep(0);
-      return;
-    }
-
-    const interval = setInterval(() => {
-      setAnalysisStep((prev) => (prev + 1) % ANALYSIS_STATES.length);
-    }, 1200);
-
-    return () => clearInterval(interval);
-  }, [analyzing]);
-
-  const selectedThought = useMemo(() => {
-    return getThoughtById(appState.thoughts, selectedThoughtId);
-  }, [appState.thoughts, selectedThoughtId]);
-
-  const children = useMemo(() => {
-    if (!selectedThoughtId) return [];
-    return getChildrenOfThought(appState.thoughts, selectedThoughtId);
-  }, [appState.thoughts, selectedThoughtId]);
+    if (!composerOpen) return;
+    inputRef.current?.focus();
+  }, [composerOpen]);
 
   function handleAddThought(parentId = null) {
     const text = input.trim();
     if (!text) return;
 
-    const parent = parentId ? getThoughtById(appState.thoughts, parentId) : null;
+    const parent = appState.thoughts.find((thought) => thought.id === parentId);
     const position = parent
       ? randomPositionNear(parent.position)
       : {
-          x: 50 + Math.round(Math.random() * 20 - 10),
-          y: 50 + Math.round(Math.random() * 20 - 10)
+          x: 50 + Math.round(Math.random() * 28 - 14),
+          y: 50 + Math.round(Math.random() * 28 - 14)
         };
 
     const newThought = createThought(text, position, parentId);
 
-    let nextThoughts = [...appState.thoughts, newThought];
-    if (parentId) {
-      nextThoughts = linkThoughtToParent(nextThoughts, newThought.id, parentId);
-    }
-
     setAppState((prev) => ({
       ...prev,
-      thoughts: normalizeThoughts(nextThoughts)
+      thoughts: normalizeThoughts([...prev.thoughts, newThought])
     }));
 
     setSelectedThoughtId(newThought.id);
@@ -289,25 +267,12 @@ export default function HomePage() {
 
           {selectedThoughtId ? (
             <button
-              className="mot-btn mot-btn-secondary"
-              onClick={() => handleAddThought(selectedThoughtId)}
+              type="button"
+              className="mot-overlay-btn"
+              onClick={() => setComposerOpen(false)}
             >
-              Add sub-thought
+              Cancel
             </button>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="mot-content-grid">
-        <div className="mot-card mot-space-card">
-          <div className="mot-card-head">
-            <div>
-              <p className="mot-label">Explore</p>
-              <h2 className="mot-section-title">Thought space</h2>
-            </div>
-            <p className="mot-card-meta">
-              {appState.thoughts.length} thought{appState.thoughts.length === 1 ? "" : "s"}
-            </p>
           </div>
 
           <ThoughtSpace

@@ -60,6 +60,12 @@ a {
   padding: 24px 16px 28px;
 }
 
+.mot-shell-minimal {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 20px;
+}
+
 .mot-bg-grid {
   position: absolute;
   inset: 0;
@@ -111,6 +117,99 @@ a {
 .mot-legal-card {
   position: relative;
   z-index: 1;
+}
+
+.mot-minimal-header,
+.mot-empty-stage,
+.mot-live-stage,
+.mot-composer-minimal,
+.mot-reset-link {
+  position: relative;
+  z-index: 1;
+}
+
+.mot-minimal-header {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.mot-minimal-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.mot-minimal-copy {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+}
+
+.mot-empty-stage {
+  display: grid;
+  place-items: center;
+  min-height: min(58vh, 560px);
+}
+
+.mot-orb-trigger {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.mot-live-stage {
+  min-height: min(62vh, 680px);
+}
+
+.mot-live-stage .mot-space {
+  min-height: min(62vh, 680px);
+  border-radius: 30px;
+}
+
+.mot-composer-minimal {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: min(680px, calc(100vw - 24px));
+  padding: 12px;
+  border-radius: 22px;
+  border: 1px solid rgba(168, 184, 255, 0.18);
+  background: rgba(8, 11, 20, 0.88);
+  backdrop-filter: blur(24px);
+  box-shadow: var(--shadow);
+}
+
+.mot-composer-actions-minimal {
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.mot-reset-link {
+  justify-self: center;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 0;
+  font-size: 0.82rem;
+  opacity: 0.72;
+}
+
+.mot-reset-link:hover {
+  opacity: 1;
+}
+
+.mot-footer-minimal {
+  justify-content: center;
+  margin-top: 0;
+  padding-top: 0;
+  gap: 20px;
+  font-size: 0.82rem;
 }
 
 .mot-topbar {

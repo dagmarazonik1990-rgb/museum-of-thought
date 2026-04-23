@@ -79,9 +79,9 @@ export default function ThoughtSpace({
       {thoughts.length === 0 ? (
         <div className="mot-empty-space">
           <div className="mot-empty-orb" />
-          <p className="mot-empty-space-title">The space is quiet.</p>
+          <p className="mot-empty-space-title">The canvas is waiting.</p>
           <p className="mot-empty-space-copy">
-            Start with one thought. Meaning can come later.
+            Add one thought and let relationships form over time.
           </p>
         </div>
       ) : null}

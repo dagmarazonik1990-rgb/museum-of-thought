@@ -106,21 +106,29 @@ export default function HomePage() {
     setComposerOpen(false);
   }
 
-  const isEmpty = appState.thoughts.length === 0;
+  const hasThoughts = appState.thoughts.length > 0;
 
   return (
     <main className="mot-shell mot-shell-minimal">
       <div className="mot-bg-grid" />
       <div className="mot-bg-glow mot-bg-glow-a" />
       <div className="mot-bg-glow mot-bg-glow-b" />
-      <div className="mot-bg-glow mot-bg-glow-c" />
 
       <header className="mot-minimal-header">
         <h1 className="mot-minimal-title">Museum of Thought</h1>
         <p className="mot-minimal-copy">Drop the first thought.</p>
       </header>
 
-      {isEmpty ? (
+      {hasThoughts ? (
+        <section className="mot-live-stage" onClick={() => setComposerOpen(true)}>
+          <ThoughtSpace
+            thoughts={appState.thoughts}
+            selectedThoughtId={selectedThoughtId}
+            onSelectThought={(id) => setSelectedThoughtId(id)}
+            onMoveThought={handleMoveThought}
+          />
+        </section>
+      ) : (
         <section className="mot-empty-stage">
           <button
             className="mot-orb-trigger"
@@ -129,15 +137,6 @@ export default function HomePage() {
           >
             <div className="mot-empty-orb" />
           </button>
-        </section>
-      ) : (
-        <section className="mot-live-stage" onClick={() => setComposerOpen(true)}>
-          <ThoughtSpace
-            thoughts={appState.thoughts}
-            selectedThoughtId={selectedThoughtId}
-            onSelectThought={(id) => setSelectedThoughtId(id)}
-            onMoveThought={handleMoveThought}
-          />
         </section>
       )}
 
@@ -150,6 +149,7 @@ export default function HomePage() {
             className="mot-textarea"
             rows={3}
             autoFocus
+            placeholder="Type a thought…"
           />
 
           <div className="mot-composer-actions mot-composer-actions-minimal">
@@ -163,13 +163,13 @@ export default function HomePage() {
         </section>
       ) : null}
 
-      {!isEmpty ? (
+      {hasThoughts ? (
         <button className="mot-reset-link" onClick={handleResetAll}>
           Reset
         </button>
       ) : null}
 
-      {!isEmpty ? (
+      {hasThoughts ? (
         <footer className="mot-footer mot-footer-minimal">
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>

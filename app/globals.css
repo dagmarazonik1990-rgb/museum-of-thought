@@ -119,9 +119,18 @@ a {
 .mot-empty-stage,
 .mot-live-stage,
 .mot-composer-minimal,
+.mot-composer-ritual,
 .mot-reset-link {
   position: relative;
   z-index: 1;
+}
+
+.mot-compose-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 4, 10, 0.2);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .mot-minimal-header {
@@ -160,6 +169,14 @@ a {
 
 .mot-live-stage {
   min-height: min(62vh, 680px);
+}
+
+.mot-live-orb-trigger {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
 .mot-live-stage .mot-space {
@@ -473,6 +490,64 @@ a {
     0 0 36px rgba(112, 221, 255, 0.26),
     0 0 70px rgba(143, 120, 255, 0.16);
   animation: pulseOrb 3.5s ease-in-out infinite;
+  transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+}
+
+.mot-orb-trigger.is-composing .mot-empty-orb {
+  transform: translateY(-40px);
+  animation:
+    pulseOrb 3.5s ease-in-out infinite,
+    pulseOrbFast 0.5s ease-out 1;
+}
+
+.mot-empty-orb-composing {
+  transform: translateY(-40px);
+}
+
+.mot-empty-orb-typing {
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 46px rgba(112, 221, 255, 0.34),
+    0 0 84px rgba(143, 120, 255, 0.22);
+}
+
+.mot-composer-ritual {
+  width: min(600px, calc(100vw - 24px));
+  margin: -18px auto 0;
+}
+
+.mot-textarea-ritual {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  max-width: 600px;
+  font-size: clamp(18px, 2.2vw, 20px);
+  padding: 0;
+  outline: none;
+  resize: none;
+  box-shadow: none;
+  min-height: 72px;
+  color: var(--text);
+}
+
+.mot-textarea-ritual::placeholder {
+  color: rgba(245, 247, 255, 0.62);
+}
+
+.mot-submitting-thought {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  max-width: min(600px, 80vw);
+  text-align: center;
+  font-size: clamp(16px, 2.1vw, 20px);
+  color: rgba(238, 242, 255, 0.92);
+  animation: submitThoughtToOrb 0.52s ease forwards;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .mot-orb {
@@ -804,6 +879,40 @@ a {
   50% {
     transform: translate(-50%, -50%) scale(1.08);
     opacity: 1;
+  }
+}
+
+@keyframes pulseOrbFast {
+  0% {
+    transform: translateY(-40px) scale(1);
+  }
+
+  50% {
+    transform: translateY(-40px) scale(1.08);
+  }
+
+  100% {
+    transform: translateY(-40px) scale(1);
+  }
+}
+
+@keyframes submitThoughtToOrb {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  70% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) translateY(-18px) scale(0.55);
+    filter: blur(0.6px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-28px) scale(0.16);
+    filter: blur(1px);
   }
 }
 

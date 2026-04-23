@@ -127,7 +127,7 @@ export default function OrbSpace({ thoughts, selectedThoughtId, onSelectThought,
     <div
       ref={spaceRef}
       className="mot-orb-space"
-      onClick={onActivateComposer}
+      onClick={selectedThoughtId ? () => onSelectThought(null) : onActivateComposer}
       role="presentation"
     >
       <svg className="mot-link-layer" viewBox="0 0 100 100" preserveAspectRatio="none">

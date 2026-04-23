@@ -70,10 +70,11 @@ a {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    linear-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.008) 1px, transparent 1px);
+  background-size: 120px 120px;
+  opacity: 0.22;
+  mask-image: radial-gradient(circle at center, black 28%, transparent 88%);
   pointer-events: none;
 }
 
@@ -128,7 +129,7 @@ a {
 .mot-compose-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 4, 10, 0.2);
+  background: rgba(2, 4, 10, 0.1);
   z-index: 1;
   pointer-events: none;
 }
@@ -185,9 +186,9 @@ a {
   border-left: none;
   border-right: none;
   background:
-    radial-gradient(circle at 30% 25%, rgba(112, 221, 255, 0.05), transparent 18%),
-    radial-gradient(circle at 72% 50%, rgba(143, 120, 255, 0.06), transparent 24%),
-    linear-gradient(180deg, rgba(5, 8, 17, 0.6), rgba(9, 12, 24, 0.72));
+    radial-gradient(circle at 30% 25%, rgba(112, 221, 255, 0.04), transparent 22%),
+    radial-gradient(circle at 72% 50%, rgba(143, 120, 255, 0.05), transparent 30%),
+    linear-gradient(180deg, rgba(5, 8, 17, 0.5), rgba(9, 12, 24, 0.66));
 }
 
 .mot-composer-minimal {
@@ -439,10 +440,10 @@ a {
   border-radius: 22px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 30% 25%, rgba(112, 221, 255, 0.08), transparent 18%),
-    radial-gradient(circle at 72% 50%, rgba(143, 120, 255, 0.1), transparent 24%),
-    linear-gradient(180deg, rgba(5, 8, 17, 0.95), rgba(9, 12, 24, 0.98));
-  border: 1px solid rgba(168, 184, 255, 0.08);
+    radial-gradient(circle at 26% 28%, rgba(112, 221, 255, 0.06), transparent 28%),
+    radial-gradient(circle at 70% 48%, rgba(143, 120, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, rgba(5, 8, 17, 0.86), rgba(8, 11, 22, 0.92));
+  border: 1px solid rgba(168, 184, 255, 0.06);
 }
 
 .mot-space-svg {
@@ -453,8 +454,13 @@ a {
 }
 
 .mot-link-line {
-  stroke: rgba(148, 198, 255, 0.28);
-  stroke-width: 0.34;
+  stroke: rgba(162, 201, 255, 0.14);
+  stroke-width: 0.24;
+}
+
+.mot-link-line-focus {
+  stroke: rgba(182, 218, 255, 0.22);
+  stroke-width: 0.28;
 }
 
 .mot-empty-space {
@@ -512,8 +518,14 @@ a {
 }
 
 .mot-composer-ritual {
-  width: min(600px, calc(100vw - 24px));
-  margin: -18px auto 0;
+  width: min(620px, calc(100vw - 24px));
+  margin: -14px auto 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(18, 24, 46, 0.08), rgba(18, 24, 46, 0.02));
+  border: 1px solid rgba(168, 184, 255, 0.06);
+  backdrop-filter: blur(10px);
+  animation: composerFloatIn 0.36s ease;
 }
 
 .mot-textarea-ritual {
@@ -523,7 +535,7 @@ a {
   text-align: center;
   max-width: 600px;
   font-size: clamp(18px, 2.2vw, 20px);
-  padding: 0;
+  padding: 4px 8px;
   outline: none;
   resize: none;
   box-shadow: none;
@@ -990,5 +1002,16 @@ a {
 
   .mot-legal-card {
     padding: 18px;
+  }
+}
+
+@keyframes composerFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

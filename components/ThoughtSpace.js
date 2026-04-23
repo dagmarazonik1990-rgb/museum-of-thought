@@ -13,17 +13,24 @@ export default function ThoughtSpace({
 
   const links = useMemo(() => {
     const map = new Map(thoughts.map((t) => [t.id, t]));
-    return thoughts
+    const allLinks = thoughts
       .filter((thought) => thought.parentId && map.has(thought.parentId))
-      .map((thought) => {
+      .map((thought, index) => {
         const parent = map.get(thought.parentId);
+        const selectedRelated =
+          selectedThoughtId && (thought.id === selectedThoughtId || parent.id === selectedThoughtId);
+
         return {
           id: `${parent.id}-${thought.id}`,
           from: parent.position,
-          to: thought.position
+          to: thought.position,
+          visible: selectedRelated || index % 2 === 0,
+          selectedRelated
         };
       });
-  }, [thoughts]);
+
+    return allLinks.filter((link) => link.visible);
+  }, [thoughts, selectedThoughtId]);
 
   function toPercentPosition(clientX, clientY) {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -71,7 +78,7 @@ export default function ThoughtSpace({
             y1={link.from.y}
             x2={link.to.x}
             y2={link.to.y}
-            className="mot-link-line"
+            className={`mot-link-line ${link.selectedRelated ? "mot-link-line-focus" : ""}`}
           />
         ))}
       </svg>

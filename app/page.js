@@ -12,7 +12,8 @@ import {
 import {
   linkThoughtToParent,
   getThoughtById,
-  randomPositionNear,
+  clusteredPositionNear,
+  getChildrenOfThought,
   normalizeThoughts
 } from "../lib/thought-utils";
 
@@ -65,8 +66,9 @@ export default function HomePage() {
   function commitThought(text) {
     const parentId = selectedThought?.id || null;
     const parent = parentId ? getThoughtById(appState.thoughts, parentId) : null;
+    const siblingCount = parentId ? getChildrenOfThought(appState.thoughts, parentId).length : 0;
     const position = parent
-      ? randomPositionNear(parent.position)
+      ? clusteredPositionNear(parent.position, siblingCount)
       : {
           x: 50 + Math.round(Math.random() * 16 - 8),
           y: 50 + Math.round(Math.random() * 16 - 8)

@@ -268,7 +268,9 @@ export default function HomePage() {
       ) : null}
 
       <section className="mot-composer">
-        <label className="mot-label" htmlFor="thought-input">Thought input</label>
+        <label className="mot-label" htmlFor="thought-input">
+          Thought input
+        </label>
         <textarea
           id="thought-input"
           value={input}
@@ -277,7 +279,9 @@ export default function HomePage() {
           className="mot-textarea"
           rows={3}
         />
-        <p className="mot-input-hint">Example thought: “I want progress, but I keep waiting for perfect timing.”</p>
+        <p className="mot-input-hint">
+          Example thought: “I want progress, but I keep waiting for perfect timing.”
+        </p>
 
         <div className="mot-composer-actions">
           <button

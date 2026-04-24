@@ -521,17 +521,49 @@ a {
 }
 
 .mot-empty-orb {
+  position: relative;
   width: 80px;
   height: 80px;
   margin: 0 auto 16px;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(112, 221, 255, 0.35) 20%, rgba(143, 120, 255, 0.18) 50%, transparent 70%);
+    radial-gradient(circle at 50% 54%, rgba(10, 28, 60, 0.06) 0%, rgba(9, 20, 45, 0.2) 34%, rgba(9, 15, 35, 0) 64%),
+    radial-gradient(circle at 46% 44%, rgba(210, 251, 255, 0.42) 0%, rgba(134, 226, 255, 0.32) 26%, rgba(109, 161, 255, 0.2) 44%, rgba(143, 120, 255, 0.14) 66%, rgba(143, 120, 255, 0.06) 78%, rgba(143, 120, 255, 0) 100%),
+    radial-gradient(circle at 36% 32%, rgba(238, 255, 255, 0.26) 0%, rgba(238, 255, 255, 0.06) 17%, rgba(238, 255, 255, 0) 42%);
   box-shadow:
-    0 0 38px rgba(112, 221, 255, 0.28),
-    0 0 78px rgba(143, 120, 255, 0.17);
+    0 0 42px rgba(112, 221, 255, 0.28),
+    0 0 82px rgba(143, 120, 255, 0.16);
   animation: pulseOrb 3.5s ease-in-out infinite;
   transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+  isolation: isolate;
+}
+
+.mot-empty-orb::before,
+.mot-empty-orb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.mot-empty-orb::before {
+  inset: -16px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(112, 221, 255, 0.36) 0%, rgba(112, 221, 255, 0.16) 38%, rgba(112, 221, 255, 0.04) 58%, rgba(112, 221, 255, 0) 74%),
+    radial-gradient(circle at 50% 50%, rgba(143, 120, 255, 0.22) 34%, rgba(143, 120, 255, 0.1) 57%, rgba(143, 120, 255, 0) 80%);
+  filter: blur(9px);
+  opacity: 0.84;
+  z-index: -1;
+}
+
+.mot-empty-orb::after {
+  background:
+    radial-gradient(circle at 42% 42%, rgba(205, 252, 255, 0.4) 0%, rgba(156, 235, 255, 0.22) 20%, rgba(156, 235, 255, 0) 52%),
+    radial-gradient(circle at 58% 62%, rgba(101, 242, 255, 0.22) 0%, rgba(101, 242, 255, 0.07) 36%, rgba(101, 242, 255, 0) 62%),
+    radial-gradient(circle at 52% 53%, rgba(171, 190, 255, 0.16) 0%, rgba(171, 190, 255, 0.08) 42%, rgba(171, 190, 255, 0) 72%);
+  mix-blend-mode: screen;
+  opacity: 0.86;
 }
 
 .mot-empty-stage .mot-orb-trigger {
@@ -556,15 +588,15 @@ a {
 .mot-empty-orb-composing {
   transform: translateY(-40px);
   box-shadow:
-    0 0 52px rgba(112, 221, 255, 0.4),
-    0 0 98px rgba(143, 120, 255, 0.28);
+    0 0 56px rgba(112, 221, 255, 0.38),
+    0 0 104px rgba(143, 120, 255, 0.24);
 }
 
 .mot-empty-orb-typing {
-  filter: brightness(1.08);
+  filter: brightness(1.05) saturate(1.04);
   box-shadow:
-    0 0 56px rgba(112, 221, 255, 0.4),
-    0 0 104px rgba(143, 120, 255, 0.3);
+    0 0 60px rgba(112, 221, 255, 0.38),
+    0 0 110px rgba(143, 120, 255, 0.26);
 }
 
 .mot-composer-ritual {

@@ -24,9 +24,10 @@ body {
   padding: 0;
   margin: 0;
   background:
-    radial-gradient(circle at top, rgba(78, 108, 255, 0.18), transparent 28%),
-    radial-gradient(circle at 20% 80%, rgba(255, 120, 200, 0.12), transparent 22%),
-    linear-gradient(180deg, #05060d 0%, #080b14 100%);
+    radial-gradient(circle at 18% 14%, rgba(108, 152, 255, 0.14), transparent 34%),
+    radial-gradient(circle at 82% 28%, rgba(143, 120, 255, 0.11), transparent 36%),
+    radial-gradient(circle at 42% 86%, rgba(255, 120, 200, 0.07), transparent 33%),
+    linear-gradient(180deg, #04060d 0%, #070a14 54%, #080b15 100%);
   color: var(--text);
   font-family:
     Inter,
@@ -58,6 +59,35 @@ a {
   min-height: 100vh;
   overflow: hidden;
   padding: 24px 16px 28px;
+  isolation: isolate;
+}
+
+.mot-shell::before,
+.mot-shell::after {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mot-shell::before {
+  opacity: 0.26;
+  background:
+    radial-gradient(90% 80% at 14% 20%, rgba(112, 221, 255, 0.14), transparent 58%),
+    radial-gradient(76% 74% at 84% 36%, rgba(143, 120, 255, 0.15), transparent 62%),
+    radial-gradient(84% 76% at 52% 82%, rgba(255, 120, 200, 0.08), transparent 66%);
+  filter: blur(24px);
+  animation: nebulaDrift 68s ease-in-out infinite alternate;
+}
+
+.mot-shell::after {
+  opacity: 0.24;
+  background:
+    radial-gradient(circle, rgba(230, 239, 255, 0.6) 0.6px, transparent 1.2px) 0 0 / 210px 210px,
+    radial-gradient(circle, rgba(201, 217, 255, 0.48) 0.5px, transparent 1px) 105px 82px / 240px 240px,
+    radial-gradient(circle, rgba(180, 203, 255, 0.42) 0.5px, transparent 1px) 50px 140px / 280px 280px;
+  animation: starDrift 92s linear infinite;
 }
 
 .mot-shell-minimal {
@@ -69,12 +99,12 @@ a {
 .mot-bg-grid {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.008) 1px, transparent 1px);
-  background-size: 120px 120px;
-  opacity: 0.22;
-  mask-image: radial-gradient(circle at center, black 28%, transparent 88%);
+  background:
+    radial-gradient(circle, rgba(224, 236, 255, 0.34) 0.6px, transparent 1.2px) 0 0 / 180px 180px,
+    radial-gradient(circle, rgba(190, 210, 255, 0.24) 0.6px, transparent 1.3px) 90px 56px / 230px 230px;
+  opacity: 0.18;
+  mask-image: radial-gradient(circle at center, black 36%, transparent 92%);
+  animation: starDrift 104s linear infinite reverse;
   pointer-events: none;
 }
 
@@ -82,7 +112,8 @@ a {
   position: absolute;
   border-radius: 999px;
   filter: blur(70px);
-  opacity: 0.22;
+  opacity: 0.2;
+  animation: nebulaPulse 24s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -186,8 +217,8 @@ a {
   border-left: none;
   border-right: none;
   background:
-    radial-gradient(circle at 30% 25%, rgba(112, 221, 255, 0.04), transparent 22%),
-    radial-gradient(circle at 72% 50%, rgba(143, 120, 255, 0.05), transparent 30%),
+    radial-gradient(circle at 30% 25%, rgba(112, 221, 255, 0.05), transparent 26%),
+    radial-gradient(circle at 72% 50%, rgba(143, 120, 255, 0.06), transparent 36%),
     linear-gradient(180deg, rgba(5, 8, 17, 0.5), rgba(9, 12, 24, 0.66));
 }
 
@@ -493,10 +524,18 @@ a {
   background:
     radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(112, 221, 255, 0.35) 20%, rgba(143, 120, 255, 0.18) 50%, transparent 70%);
   box-shadow:
-    0 0 36px rgba(112, 221, 255, 0.26),
-    0 0 70px rgba(143, 120, 255, 0.16);
+    0 0 38px rgba(112, 221, 255, 0.28),
+    0 0 78px rgba(143, 120, 255, 0.17);
   animation: pulseOrb 3.5s ease-in-out infinite;
   transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
+}
+
+.mot-empty-stage .mot-orb-trigger {
+  animation: orbTriggerFloat 11s ease-in-out infinite;
+}
+
+.mot-live-orb-trigger {
+  animation: liveOrbTriggerFloat 11.6s ease-in-out infinite;
 }
 
 .mot-orb-trigger.is-composing .mot-empty-orb {
@@ -506,24 +545,31 @@ a {
     pulseOrbFast 0.5s ease-out 1;
 }
 
+.mot-orb-trigger.is-composing {
+  animation-play-state: paused;
+}
+
 .mot-empty-orb-composing {
   transform: translateY(-40px);
+  box-shadow:
+    0 0 52px rgba(112, 221, 255, 0.4),
+    0 0 98px rgba(143, 120, 255, 0.28);
 }
 
 .mot-empty-orb-typing {
   filter: brightness(1.08);
   box-shadow:
-    0 0 46px rgba(112, 221, 255, 0.34),
-    0 0 84px rgba(143, 120, 255, 0.22);
+    0 0 56px rgba(112, 221, 255, 0.4),
+    0 0 104px rgba(143, 120, 255, 0.3);
 }
 
 .mot-composer-ritual {
   width: min(620px, calc(100vw - 24px));
   margin: -14px auto 0;
-  padding: 8px 14px;
+  padding: 7px 14px;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(18, 24, 46, 0.08), rgba(18, 24, 46, 0.02));
-  border: 1px solid rgba(168, 184, 255, 0.06);
+  background: linear-gradient(180deg, rgba(18, 24, 46, 0.06), rgba(18, 24, 46, 0.015));
+  border: 1px solid rgba(168, 184, 255, 0.05);
   backdrop-filter: blur(10px);
   animation: composerFloatIn 0.36s ease;
 }
@@ -871,12 +917,12 @@ a {
 @keyframes pulseOrb {
   0%,
   100% {
-    transform: scale(1);
-    opacity: 0.88;
+    transform: scale(0.985);
+    opacity: 0.9;
   }
 
   50% {
-    transform: scale(1.06);
+    transform: scale(1.035);
     opacity: 1;
   }
 }
@@ -905,6 +951,54 @@ a {
 
   100% {
     transform: translateY(-40px) scale(1);
+  }
+}
+
+@keyframes orbTriggerFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes liveOrbTriggerFloat {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-3px);
+  }
+}
+
+@keyframes nebulaDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-1.6%, 1.2%, 0) scale(1.03);
+  }
+}
+
+@keyframes starDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-2%, -1.4%, 0);
+  }
+}
+
+@keyframes nebulaPulse {
+  0%,
+  100% {
+    opacity: 0.16;
+  }
+  50% {
+    opacity: 0.26;
   }
 }
 
@@ -1002,6 +1096,20 @@ a {
 
   .mot-legal-card {
     padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mot-shell::before,
+  .mot-shell::after,
+  .mot-bg-grid,
+  .mot-bg-glow,
+  .mot-empty-stage .mot-orb-trigger,
+  .mot-live-orb-trigger,
+  .mot-empty-orb,
+  .mot-orb-trigger.is-composing .mot-empty-orb,
+  .mot-orb-ring {
+    animation: none !important;
   }
 }
 

@@ -24,12 +24,12 @@ body {
   padding: 0;
   margin: 0;
   background:
-    radial-gradient(182% 126% at 50% 126%, rgba(2, 4, 11, 0.98) 34%, rgba(2, 4, 11, 0) 74%),
-    radial-gradient(162% 124% at 52% -24%, rgba(2, 4, 11, 0.92) 34%, rgba(2, 4, 11, 0) 72%),
-    radial-gradient(124% 96% at 14% 10%, rgba(78, 128, 255, 0.3), transparent 54%),
-    radial-gradient(104% 90% at 86% 20%, rgba(114, 90, 245, 0.27), transparent 60%),
-    radial-gradient(90% 82% at 34% 88%, rgba(248, 102, 204, 0.13), transparent 68%),
-    linear-gradient(180deg, #02040a 0%, #040814 46%, #050914 100%);
+    radial-gradient(170% 120% at 50% 120%, rgba(2, 4, 12, 0.94) 40%, rgba(2, 4, 12, 0) 76%),
+    radial-gradient(150% 120% at 50% -18%, rgba(2, 4, 12, 0.88) 38%, rgba(2, 4, 12, 0) 74%),
+    radial-gradient(120% 96% at 20% 12%, rgba(84, 132, 255, 0.3), transparent 56%),
+    radial-gradient(96% 88% at 82% 24%, rgba(128, 104, 255, 0.26), transparent 60%),
+    radial-gradient(80% 72% at 50% 90%, rgba(255, 108, 196, 0.14), transparent 66%),
+    linear-gradient(180deg, #02040b 0%, #050915 48%, #060a15 100%);
   color: var(--text);
   font-family:
     Inter,
@@ -79,30 +79,30 @@ a {
 }
 
 .mot-shell::before {
-  opacity: 0.7;
+  opacity: 0.66;
   background:
-    radial-gradient(114% 94% at 6% 16%, rgba(60, 128, 255, 0.44), transparent 58%),
-    radial-gradient(92% 86% at 90% 22%, rgba(118, 92, 255, 0.36), transparent 62%),
-    radial-gradient(80% 76% at 58% 46%, rgba(52, 118, 255, 0.28), transparent 68%),
-    radial-gradient(64% 62% at 22% 64%, rgba(88, 70, 218, 0.25), transparent 74%),
-    radial-gradient(56% 52% at 78% 70%, rgba(250, 104, 208, 0.17), transparent 76%),
-    radial-gradient(52% 46% at 30% 80%, rgba(218, 92, 214, 0.14), transparent 78%);
-  filter: blur(48px) saturate(116%);
-  animation: nebulaDrift 118s ease-in-out infinite alternate;
+    radial-gradient(108% 90% at 8% 20%, rgba(58, 120, 255, 0.42), transparent 60%),
+    radial-gradient(90% 84% at 86% 24%, rgba(126, 96, 255, 0.38), transparent 62%),
+    radial-gradient(78% 76% at 50% 42%, rgba(86, 82, 214, 0.24), transparent 68%),
+    radial-gradient(76% 70% at 50% 56%, rgba(44, 116, 255, 0.26), transparent 70%),
+    radial-gradient(58% 52% at 70% 74%, rgba(255, 104, 198, 0.17), transparent 74%),
+    radial-gradient(52% 44% at 28% 72%, rgba(222, 98, 221, 0.14), transparent 76%);
+  filter: blur(44px) saturate(114%);
+  animation: nebulaDrift 108s ease-in-out infinite alternate;
 }
 
 .mot-shell::after {
-  opacity: 0.42;
+  opacity: 0.46;
   background:
-    radial-gradient(circle, rgba(240, 248, 255, 0.86) 0.68px, transparent 1.48px) 0 0 / 222px 222px,
-    radial-gradient(circle, rgba(220, 236, 255, 0.7) 0.56px, transparent 1.36px) 110px 72px / 276px 276px,
-    radial-gradient(circle, rgba(198, 220, 255, 0.52) 0.5px, transparent 1.28px) 52px 140px / 320px 320px,
-    radial-gradient(80% 72% at 42% 44%, rgba(84, 138, 255, 0.2), transparent 66%),
-    radial-gradient(62% 48% at 80% 70%, rgba(242, 102, 214, 0.17), transparent 74%),
-    radial-gradient(58% 52% at 22% 80%, rgba(202, 102, 228, 0.12), transparent 76%),
-    radial-gradient(circle at 50% 50%, rgba(4, 8, 20, 0) 48%, rgba(2, 4, 11, 0.78) 100%);
+    radial-gradient(circle, rgba(240, 248, 255, 0.82) 0.7px, transparent 1.55px) 0 0 / 210px 210px,
+    radial-gradient(circle, rgba(220, 236, 255, 0.74) 0.56px, transparent 1.4px) 102px 70px / 250px 250px,
+    radial-gradient(circle, rgba(196, 220, 255, 0.54) 0.52px, transparent 1.3px) 46px 122px / 296px 296px,
+    radial-gradient(74% 68% at 52% 48%, rgba(92, 142, 255, 0.22), transparent 66%),
+    radial-gradient(56% 46% at 76% 72%, rgba(236, 102, 214, 0.18), transparent 74%),
+    radial-gradient(54% 48% at 24% 76%, rgba(214, 106, 230, 0.13), transparent 76%),
+    radial-gradient(circle at 50% 50%, rgba(4, 8, 20, 0) 54%, rgba(2, 4, 12, 0.72) 100%);
   filter: blur(0.24px);
-  animation: starDrift 148s linear infinite;
+  animation: starDrift 136s linear infinite;
 }
 
 .mot-shell-minimal {
@@ -117,7 +117,7 @@ a {
   background:
     radial-gradient(circle, rgba(236, 244, 255, 0.38) 0.7px, transparent 1.5px) 0 0 / 198px 198px,
     radial-gradient(circle, rgba(200, 220, 255, 0.28) 0.68px, transparent 1.4px) 88px 52px / 252px 252px;
-  opacity: 0.17;
+  opacity: 0.2;
   mask-image: radial-gradient(circle at center, black 36%, transparent 92%);
   animation: starDrift 144s linear infinite reverse;
   pointer-events: none;
@@ -994,7 +994,7 @@ a {
     transform: translate3d(0, 0, 0) scale(1);
   }
   100% {
-    transform: translate3d(-2.2%, 1.5%, 0) scale(1.05);
+    transform: translate3d(-1.8%, 1.4%, 0) scale(1.045);
   }
 }
 

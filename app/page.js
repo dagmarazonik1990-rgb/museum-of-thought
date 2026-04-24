@@ -203,6 +203,15 @@ export default function HomePage() {
             autoFocus
             placeholder="Write one honest thought."
           />
+          <button
+            type="button"
+            className="mot-composer-submit"
+            onClick={handleAddThought}
+            disabled={!input.trim()}
+            aria-label="Drop thought"
+          >
+            Drop
+          </button>
         </section>
       ) : null}
 

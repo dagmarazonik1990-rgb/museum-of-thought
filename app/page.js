@@ -17,9 +17,11 @@ import {
   normalizeThoughts
 } from "../lib/thought-utils";
 
-const COLLAPSE_MS = 300;
-const ORB_PULSE_MS = 320;
-const SPAWN_MS = 360;
+const COLLAPSE_MS = 250;
+const COLLAPSE_PAUSE_MS = 120;
+const ORB_PULSE_MS = 400;
+const BIRTH_PAUSE_MS = 150;
+const SPAWN_MS = 350;
 
 export default function HomePage() {
   const [appState, setAppState] = useState(createInitialState());
@@ -113,24 +115,32 @@ export default function HomePage() {
     setBirthPhase("collapse");
 
     const collapseTimer = window.setTimeout(() => {
-      const newThoughtId = commitThought(text);
-      setBirthThoughtId(newThoughtId);
-      setBirthPhase("birth");
-      setSubmittingText("");
-      setInput("");
-      setIsComposing(false);
+      const collapsePauseTimer = window.setTimeout(() => {
+        const newThoughtId = commitThought(text);
+        setBirthThoughtId(newThoughtId);
+        setBirthPhase("birth");
+        setSubmittingText("");
+        setInput("");
+        setIsComposing(false);
 
-      const spawnTimer = window.setTimeout(() => {
-        setBirthPhase("spawn");
+        const birthPauseTimer = window.setTimeout(() => {
+          const spawnTimer = window.setTimeout(() => {
+            setBirthPhase("spawn");
 
-        const connectTimer = window.setTimeout(() => {
-          setBirthPhase("connected");
-        }, SPAWN_MS);
+            const connectTimer = window.setTimeout(() => {
+              setBirthPhase("connected");
+            }, SPAWN_MS);
 
-        birthTimersRef.current.push(connectTimer);
-      }, ORB_PULSE_MS);
+            birthTimersRef.current.push(connectTimer);
+          }, SPAWN_MS);
 
-      birthTimersRef.current.push(spawnTimer);
+          birthTimersRef.current.push(spawnTimer);
+        }, ORB_PULSE_MS + BIRTH_PAUSE_MS);
+
+        birthTimersRef.current.push(birthPauseTimer);
+      }, COLLAPSE_PAUSE_MS);
+
+      birthTimersRef.current.push(collapsePauseTimer);
     }, COLLAPSE_MS);
 
     birthTimersRef.current.push(collapseTimer);

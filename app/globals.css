@@ -608,6 +608,14 @@ a {
   border: 1px solid rgba(168, 184, 255, 0.05);
   backdrop-filter: blur(10px);
   animation: composerFloatIn 0.36s ease;
+  transform-origin: 50% 82%;
+  transition: opacity 0.28s ease, transform 0.3s ease, filter 0.3s ease;
+}
+
+.mot-composer-ritual-collapsing {
+  opacity: 0;
+  transform: translateY(54px) scale(0.86);
+  filter: blur(0.6px);
 }
 
 .mot-textarea-ritual {
@@ -649,14 +657,14 @@ a {
 .mot-submitting-thought {
   position: absolute;
   left: 50%;
-  top: 56%;
+  top: 64%;
   transform: translate(-50%, -50%);
   margin: 0;
   max-width: min(600px, 80vw);
   text-align: center;
   font-size: clamp(16px, 2.1vw, 20px);
   color: rgba(238, 242, 255, 0.92);
-  animation: submitThoughtToOrb 0.52s ease forwards;
+  animation: submitThoughtToOrb 0.3s ease forwards;
   pointer-events: none;
   z-index: 3;
 }
@@ -670,6 +678,7 @@ a {
   background: transparent;
   color: var(--text);
   padding: 0;
+  contain: layout paint;
 }
 
 .mot-orb-core {
@@ -711,6 +720,7 @@ a {
   font-size: 0.82rem;
   line-height: 1.2;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26);
+  animation: textPillIn 0.24s ease;
 }
 
 .mot-orb-selected .mot-orb-ring {
@@ -718,6 +728,48 @@ a {
   box-shadow:
     0 0 24px rgba(112, 221, 255, 0.35),
     0 0 32px rgba(143, 120, 255, 0.18);
+}
+
+.mot-empty-orb-birth {
+  animation:
+    pulseOrb 3.5s ease-in-out infinite,
+    orbBirthPulse 0.32s ease;
+  box-shadow:
+    0 0 66px rgba(112, 221, 255, 0.44),
+    0 0 120px rgba(143, 120, 255, 0.32);
+}
+
+.mot-orb-child .mot-orb-core {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+  box-shadow:
+    0 0 14px rgba(112, 221, 255, 0.52),
+    0 0 26px rgba(143, 120, 255, 0.2);
+}
+
+.mot-orb-child .mot-orb-ring {
+  width: 36px;
+  height: 36px;
+  border-color: rgba(138, 202, 255, 0.26);
+  animation:
+    breatheRing 4.2s ease-in-out infinite,
+    orbChildBreath 5.2s ease-in-out infinite;
+}
+
+.mot-orb-born {
+  animation: thoughtBirthIn 0.36s ease forwards;
+}
+
+.mot-birth-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(150, 220, 255, 0.3), rgba(150, 220, 255, 0.12));
+  box-shadow: 0 0 8px rgba(112, 221, 255, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  animation: birthLineIn 0.34s ease forwards;
 }
 
 .mot-empty-panel {
@@ -1007,6 +1059,21 @@ a {
   }
 }
 
+@keyframes orbBirthPulse {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.16);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
 @keyframes orbTriggerFloat {
   0%,
   100% {
@@ -1072,6 +1139,47 @@ a {
     opacity: 0;
     transform: translate(-50%, -50%) translateY(-28px) scale(0.16);
     filter: blur(1px);
+  }
+}
+
+@keyframes thoughtBirthIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes birthLineIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.24;
+  }
+}
+
+@keyframes orbChildBreath {
+  0%,
+  100% {
+    filter: brightness(0.92);
+  }
+  50% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes textPillIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1161,7 +1269,11 @@ a {
   .mot-live-orb-trigger,
   .mot-empty-orb,
   .mot-orb-trigger.is-composing .mot-empty-orb,
-  .mot-orb-ring {
+  .mot-empty-orb-birth,
+  .mot-orb-ring,
+  .mot-orb-born,
+  .mot-birth-line,
+  .mot-orb-text {
     animation: none !important;
   }
 }

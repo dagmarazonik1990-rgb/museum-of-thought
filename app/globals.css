@@ -527,12 +527,13 @@ a {
   margin: 0 auto 16px;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 54%, rgba(10, 28, 60, 0.06) 0%, rgba(9, 20, 45, 0.2) 34%, rgba(9, 15, 35, 0) 64%),
+    radial-gradient(circle at 50% 54%, rgba(5, 14, 35, 0.1) 0%, rgba(7, 16, 38, 0.28) 42%, rgba(3, 8, 24, 0.56) 80%, rgba(3, 8, 24, 0.72) 100%),
+    radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.9) 0%, rgba(120, 180, 255, 0.6) 25%, rgba(20, 30, 60, 0.9) 60%),
     radial-gradient(circle at 46% 44%, rgba(210, 251, 255, 0.42) 0%, rgba(134, 226, 255, 0.32) 26%, rgba(109, 161, 255, 0.2) 44%, rgba(143, 120, 255, 0.14) 66%, rgba(143, 120, 255, 0.06) 78%, rgba(143, 120, 255, 0) 100%),
     radial-gradient(circle at 36% 32%, rgba(238, 255, 255, 0.26) 0%, rgba(238, 255, 255, 0.06) 17%, rgba(238, 255, 255, 0) 42%);
   box-shadow:
-    0 0 42px rgba(112, 221, 255, 0.28),
-    0 0 82px rgba(143, 120, 255, 0.16);
+    0 0 32px rgba(112, 221, 255, 0.24),
+    0 0 68px rgba(143, 120, 255, 0.14);
   animation: pulseOrb 3.5s ease-in-out infinite;
   transition: transform 0.32s ease, box-shadow 0.32s ease, filter 0.32s ease;
   isolation: isolate;
@@ -552,8 +553,8 @@ a {
   background:
     radial-gradient(circle at 50% 50%, rgba(112, 221, 255, 0.36) 0%, rgba(112, 221, 255, 0.16) 38%, rgba(112, 221, 255, 0.04) 58%, rgba(112, 221, 255, 0) 74%),
     radial-gradient(circle at 50% 50%, rgba(143, 120, 255, 0.22) 34%, rgba(143, 120, 255, 0.1) 57%, rgba(143, 120, 255, 0) 80%);
-  filter: blur(9px);
-  opacity: 0.84;
+  filter: blur(7px);
+  opacity: 0.74;
   z-index: -1;
 }
 
@@ -742,34 +743,41 @@ a {
 .mot-orb-child .mot-orb-core {
   width: 18px;
   height: 18px;
-  opacity: 0.9;
+  opacity: 0.98;
+  filter: brightness(1.08) saturate(1.06);
   box-shadow:
-    0 0 14px rgba(112, 221, 255, 0.52),
-    0 0 26px rgba(143, 120, 255, 0.2);
+    0 0 12px rgba(155, 236, 255, 0.66),
+    0 0 24px rgba(143, 120, 255, 0.26),
+    0 0 36px rgba(112, 221, 255, 0.16);
 }
 
 .mot-orb-child .mot-orb-ring {
   width: 36px;
   height: 36px;
-  border-color: rgba(138, 202, 255, 0.26);
+  border-color: rgba(162, 220, 255, 0.4);
+  box-shadow:
+    0 0 18px rgba(122, 214, 255, 0.22),
+    0 0 32px rgba(143, 120, 255, 0.14);
   animation:
     breatheRing 4.2s ease-in-out infinite,
-    orbChildBreath 5.2s ease-in-out infinite;
+    orbChildBreath 4.7s ease-in-out infinite;
 }
 
 .mot-orb-born {
-  animation: thoughtBirthIn 0.36s ease forwards;
+  animation: thoughtBirthIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .mot-birth-line {
   position: absolute;
   height: 1px;
   transform-origin: left center;
-  background: linear-gradient(90deg, rgba(150, 220, 255, 0.3), rgba(150, 220, 255, 0.12));
-  box-shadow: 0 0 8px rgba(112, 221, 255, 0.22);
+  background: linear-gradient(90deg, rgba(196, 240, 255, 0.34), rgba(142, 215, 255, 0.2) 55%, rgba(142, 215, 255, 0.08));
+  box-shadow:
+    0 0 8px rgba(112, 221, 255, 0.16),
+    0 0 14px rgba(112, 221, 255, 0.14);
   opacity: 0;
   pointer-events: none;
-  animation: birthLineIn 0.34s ease forwards;
+  animation: birthLineIn 0.34s ease 0.2s forwards;
 }
 
 .mot-empty-panel {
@@ -1145,11 +1153,15 @@ a {
 @keyframes thoughtBirthIn {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6);
+    transform: translate(-50%, calc(-50% + 3px)) scale(0.5);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-50%, calc(-50% - 1px)) scale(1.05);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, calc(-50% - 3px)) scale(1);
   }
 }
 
@@ -1157,18 +1169,27 @@ a {
   0% {
     opacity: 0;
   }
+  50% {
+    opacity: 0.28;
+    box-shadow:
+      0 0 10px rgba(112, 221, 255, 0.26),
+      0 0 18px rgba(112, 221, 255, 0.22);
+  }
   100% {
-    opacity: 0.24;
+    opacity: 0.25;
+    box-shadow:
+      0 0 8px rgba(112, 221, 255, 0.18),
+      0 0 14px rgba(112, 221, 255, 0.15);
   }
 }
 
 @keyframes orbChildBreath {
   0%,
   100% {
-    filter: brightness(0.92);
+    filter: brightness(0.96) saturate(1.03);
   }
   50% {
-    filter: brightness(1);
+    filter: brightness(1.08) saturate(1.1);
   }
 }
 

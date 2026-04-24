@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ThoughtSpace from "../components/ThoughtSpace";
 import {
   createThought,
@@ -17,7 +17,9 @@ import {
   normalizeThoughts
 } from "../lib/thought-utils";
 
-const SUBMIT_ANIMATION_MS = 520;
+const COLLAPSE_MS = 300;
+const ORB_PULSE_MS = 320;
+const SPAWN_MS = 360;
 
 export default function HomePage() {
   const [appState, setAppState] = useState(createInitialState());
@@ -26,6 +28,9 @@ export default function HomePage() {
   const [spaceLoaded, setSpaceLoaded] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
   const [submittingText, setSubmittingText] = useState("");
+  const [birthPhase, setBirthPhase] = useState("idle");
+  const [birthThoughtId, setBirthThoughtId] = useState(null);
+  const birthTimersRef = useRef([]);
 
   useEffect(() => {
     const loaded = loadAppState();
@@ -37,6 +42,13 @@ export default function HomePage() {
     if (!spaceLoaded) return;
     saveAppState(appState);
   }, [appState, spaceLoaded]);
+
+  useEffect(() => {
+    return () => {
+      birthTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+      birthTimersRef.current = [];
+    };
+  }, []);
 
   useEffect(() => {
     function handleSpace(e) {
@@ -70,8 +82,8 @@ export default function HomePage() {
     const position = parent
       ? clusteredPositionNear(parent.position, siblingCount)
       : {
-          x: 50 + Math.round(Math.random() * 16 - 8),
-          y: 50 + Math.round(Math.random() * 16 - 8)
+          x: 50 + Math.round(Math.random() * 6 - 3),
+          y: 78 + Math.round(Math.random() * 6 - 3)
         };
 
     const newThought = createThought(text, position, parentId);
@@ -87,20 +99,41 @@ export default function HomePage() {
     }));
 
     setSelectedThoughtId(newThought.id);
+    return newThought.id;
   }
 
   function handleAddThought() {
     const text = input.trim();
     if (!text) return;
 
-    setSubmittingText(text);
+    birthTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    birthTimersRef.current = [];
 
-    window.setTimeout(() => {
-      commitThought(text);
+    setSubmittingText(text);
+    setBirthPhase("collapse");
+
+    const collapseTimer = window.setTimeout(() => {
+      const newThoughtId = commitThought(text);
+      setBirthThoughtId(newThoughtId);
+      setBirthPhase("birth");
       setSubmittingText("");
       setInput("");
       setIsComposing(false);
-    }, SUBMIT_ANIMATION_MS);
+
+      const spawnTimer = window.setTimeout(() => {
+        setBirthPhase("spawn");
+
+        const connectTimer = window.setTimeout(() => {
+          setBirthPhase("connected");
+        }, SPAWN_MS);
+
+        birthTimersRef.current.push(connectTimer);
+      }, ORB_PULSE_MS);
+
+      birthTimersRef.current.push(spawnTimer);
+    }, COLLAPSE_MS);
+
+    birthTimersRef.current.push(collapseTimer);
   }
 
   function handleComposerKeyDown(e) {
@@ -127,13 +160,18 @@ export default function HomePage() {
     setInput("");
     setIsComposing(false);
     setSubmittingText("");
+    setBirthPhase("idle");
+    setBirthThoughtId(null);
+    birthTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    birthTimersRef.current = [];
   }
 
   const hasThoughts = appState.thoughts.length > 0;
   const orbClasses = [
     "mot-empty-orb",
     isComposing ? "mot-empty-orb-composing" : "",
-    input.trim() ? "mot-empty-orb-typing" : ""
+    input.trim() ? "mot-empty-orb-typing" : "",
+    birthPhase === "birth" ? "mot-empty-orb-birth" : ""
   ]
     .filter(Boolean)
     .join(" ");
@@ -157,6 +195,8 @@ export default function HomePage() {
             selectedThoughtId={selectedThoughtId}
             onSelectThought={(id) => setSelectedThoughtId(id)}
             onMoveThought={handleMoveThought}
+            birthPhase={birthPhase}
+            birthThoughtId={birthThoughtId}
           />
 
           {submittingText ? (
@@ -192,7 +232,10 @@ export default function HomePage() {
       )}
 
       {isComposing ? (
-        <section className="mot-composer-ritual" onClick={(e) => e.stopPropagation()}>
+        <section
+          className={`mot-composer-ritual ${birthPhase === "collapse" ? "mot-composer-ritual-collapsing" : ""}`}
+          onClick={(e) => e.stopPropagation()}
+        >
           <textarea
             id="thought-input"
             value={input}

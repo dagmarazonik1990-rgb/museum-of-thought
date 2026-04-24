@@ -1,15 +1,18 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function ThoughtSpace({
   thoughts,
   selectedThoughtId,
   onSelectThought,
-  onMoveThought
+  onMoveThought,
+  birthPhase,
+  birthThoughtId
 }) {
   const containerRef = useRef(null);
   const [dragState, setDragState] = useState(null);
+  const [visibleTextThoughtId, setVisibleTextThoughtId] = useState(null);
 
   const links = useMemo(() => {
     const map = new Map(thoughts.map((t) => [t.id, t]));
@@ -31,6 +34,37 @@ export default function ThoughtSpace({
 
     return allLinks.filter((link) => link.visible);
   }, [thoughts, selectedThoughtId]);
+
+  const birthLinkStyle = useMemo(() => {
+    if (!birthThoughtId || (birthPhase !== "spawn" && birthPhase !== "connected")) return null;
+    const childThought = thoughts.find((thought) => thought.id === birthThoughtId);
+    if (!childThought) return null;
+
+    const anchorX = 50;
+    const anchorY = 92;
+    const dx = childThought.position.x - anchorX;
+    const dy = childThought.position.y - anchorY;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+    return {
+      left: `${anchorX}%`,
+      top: `${anchorY}%`,
+      width: `${length}%`,
+      transform: `rotate(${angle}deg)`
+    };
+  }, [birthPhase, birthThoughtId, thoughts]);
+
+  useEffect(() => {
+    function handleOutsidePointer(event) {
+      const target = event.target;
+      if (target instanceof Element && target.closest(".mot-orb")) return;
+      setVisibleTextThoughtId(null);
+    }
+
+    window.addEventListener("pointerdown", handleOutsidePointer);
+    return () => window.removeEventListener("pointerdown", handleOutsidePointer);
+  }, []);
 
   function toPercentPosition(clientX, clientY) {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -66,6 +100,11 @@ export default function ThoughtSpace({
     <div
       ref={containerRef}
       className="mot-space"
+      onPointerDown={(event) => {
+        if (event.target === containerRef.current) {
+          setVisibleTextThoughtId(null);
+        }
+      }}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
@@ -83,6 +122,8 @@ export default function ThoughtSpace({
         ))}
       </svg>
 
+      {birthLinkStyle ? <span className="mot-birth-line" style={birthLinkStyle} aria-hidden /> : null}
+
       {thoughts.length === 0 ? (
         <div className="mot-empty-space">
           <div className="mot-empty-orb" />
@@ -95,24 +136,32 @@ export default function ThoughtSpace({
 
       {thoughts.map((thought) => {
         const selected = thought.id === selectedThoughtId;
+        const showText = visibleTextThoughtId === thought.id;
+        const isBirthThought = thought.id === birthThoughtId;
+        const isRootThought = !thought.parentId;
 
         return (
           <button
             key={thought.id}
-            className={`mot-orb ${selected ? "mot-orb-selected" : ""}`}
+            className={`mot-orb ${selected ? "mot-orb-selected" : ""} ${isRootThought ? "mot-orb-child" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
             style={{
               left: `${thought.position.x}%`,
               top: `${thought.position.y}%`
             }}
-            onClick={() => onSelectThought(thought.id)}
+            onClick={() => {
+              onSelectThought(thought.id);
+              setVisibleTextThoughtId(thought.id);
+            }}
             onPointerDown={(e) => handlePointerDown(e, thought.id)}
             title={thought.text}
           >
             <span className="mot-orb-core" />
             <span className="mot-orb-ring" />
-            <span className="mot-orb-text">
-              {thought.text.length > 24 ? `${thought.text.slice(0, 24)}…` : thought.text}
-            </span>
+            {showText ? (
+              <span className="mot-orb-text">
+                {thought.text.length > 24 ? `${thought.text.slice(0, 24)}…` : thought.text}
+              </span>
+            ) : null}
           </button>
         );
       })}

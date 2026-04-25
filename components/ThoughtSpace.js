@@ -82,11 +82,20 @@ export default function ThoughtSpace({
   function handlePointerDown(e, thoughtId) {
     e.preventDefault();
     e.stopPropagation();
-    setDragState({ thoughtId });
+    setDragState({ thoughtId, startX: e.clientX, startY: e.clientY, hasMoved: false });
   }
 
   function handlePointerMove(e) {
     if (!dragState) return;
+    const dx = Math.abs(e.clientX - dragState.startX);
+    const dy = Math.abs(e.clientY - dragState.startY);
+    const movedEnough = dx + dy > 6;
+    if (!dragState.hasMoved && movedEnough) {
+      setDragState((prev) => (prev ? { ...prev, hasMoved: true } : prev));
+    }
+    if (!dragState.hasMoved && !movedEnough) {
+      return;
+    }
     const position = toPercentPosition(e.clientX, e.clientY);
     if (!position) return;
     onMoveThought(dragState.thoughtId, position);
@@ -139,11 +148,12 @@ export default function ThoughtSpace({
         const showText = visibleTextThoughtId === thought.id;
         const isBirthThought = thought.id === birthThoughtId;
         const isRootThought = !thought.parentId;
+        const isChildThought = Boolean(thought.parentId);
 
         return (
           <button
             key={thought.id}
-            className={`mot-orb ${selected ? "mot-orb-selected" : ""} ${isRootThought ? "mot-orb-child" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
+            className={`mot-orb ${selected ? "mot-orb-selected" : ""} ${isChildThought ? "mot-orb-child" : ""} ${isRootThought ? "mot-orb-root" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
             style={{
               left: `${thought.position.x}%`,
               top: `${thought.position.y}%`
@@ -151,6 +161,12 @@ export default function ThoughtSpace({
             onClick={() => {
               onSelectThought(thought.id);
               setVisibleTextThoughtId(thought.id);
+            }}
+            onPointerUp={() => {
+              if (!selectedThoughtId || visibleTextThoughtId !== thought.id) {
+                onSelectThought(thought.id);
+                setVisibleTextThoughtId(thought.id);
+              }
             }}
             onPointerDown={(e) => handlePointerDown(e, thought.id)}
             title={thought.text}

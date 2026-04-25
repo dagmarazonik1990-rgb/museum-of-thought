@@ -81,12 +81,25 @@ export default function HomePage() {
     const parentId = selectedThought?.id || null;
     const parent = parentId ? getThoughtById(appState.thoughts, parentId) : null;
     const siblingCount = parentId ? getChildrenOfThought(appState.thoughts, parentId).length : 0;
+    const isFirstThought = appState.thoughts.length === 0;
+    const isFirstChildOfRoot =
+      parent && !parent.parentId && siblingCount === 0;
     const position = parent
-      ? clusteredPositionNear(parent.position, siblingCount)
-      : {
-          x: 50 + Math.round(Math.random() * 6 - 3),
-          y: 78 + Math.round(Math.random() * 6 - 3)
-        };
+      ? isFirstChildOfRoot
+        ? {
+            x: Math.max(18, Math.min(82, parent.position.x + Math.round(Math.random() * 6 - 3))),
+            y: Math.max(18, Math.min(64, parent.position.y - (16 + Math.round(Math.random() * 4))))
+          }
+        : clusteredPositionNear(parent.position, siblingCount)
+      : isFirstThought
+        ? {
+            x: 50 + Math.round(Math.random() * 6 - 3),
+            y: 42 + Math.round(Math.random() * 6 - 3)
+          }
+        : {
+            x: 50 + Math.round(Math.random() * 6 - 3),
+            y: 58 + Math.round(Math.random() * 8 - 4)
+          };
 
     const newThought = createThought(text, position, parentId);
 

@@ -149,14 +149,16 @@ export default function ThoughtSpace({
         const isBirthThought = thought.id === birthThoughtId;
         const isRootThought = !thought.parentId;
         const isChildThought = Boolean(thought.parentId);
+        const isFirstThought = thoughts.length > 0 && thought.id === thoughts[0].id;
+        const safePosition = isFirstThought ? { x: 50, y: 32 } : thought.position;
 
         return (
           <button
             key={thought.id}
-            className={`mot-orb ${selected ? "mot-orb-selected" : ""} ${isChildThought ? "mot-orb-child" : ""} ${isRootThought ? "mot-orb-root" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
+            className={`mot-orb mot-thought-orb ${selected ? "mot-orb-selected" : ""} ${isChildThought ? "mot-orb-child" : ""} ${isRootThought ? "mot-orb-root" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
             style={{
-              left: `${thought.position.x}%`,
-              top: `${thought.position.y}%`
+              left: `${safePosition.x}%`,
+              top: `${safePosition.y}%`
             }}
             onClick={() => {
               onSelectThought(thought.id);

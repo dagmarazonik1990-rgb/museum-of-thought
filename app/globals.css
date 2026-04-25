@@ -721,19 +721,25 @@ a {
 }
 
 .mot-orb-text {
-  position: relative;
+  position: absolute;
+  transform: translateX(-50%);
   display: inline-block;
-  margin-top: 34px;
   padding: 10px 12px;
-  border-radius: 999px;
+  border-radius: 14px;
   background: rgba(11, 15, 28, 0.72);
   border: 1px solid rgba(168, 184, 255, 0.1);
   backdrop-filter: blur(18px);
   color: #eef2ff;
   font-size: 0.82rem;
-  line-height: 1.2;
+  line-height: 1.35;
+  width: max-content;
+  max-width: min(72vw, 320px);
+  white-space: normal;
+  overflow-wrap: anywhere;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26);
   animation: textPillIn 0.24s ease;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .mot-orb-selected .mot-orb-ring {
@@ -1273,7 +1279,6 @@ a {
   }
 
   .mot-orb-text {
-    max-width: 140px;
     font-size: 0.78rem;
   }
 

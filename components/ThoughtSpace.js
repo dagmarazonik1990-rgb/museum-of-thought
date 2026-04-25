@@ -14,6 +14,16 @@ export default function ThoughtSpace({
   const [dragState, setDragState] = useState(null);
   const [visibleTextThoughtId, setVisibleTextThoughtId] = useState(null);
 
+  const getThoughtDisplayPosition = (thought) => {
+    const isFirstThought = thoughts.length > 0 && thought.id === thoughts[0].id;
+    if (!isFirstThought) return thought.position;
+
+    return {
+      x: 50,
+      y: Math.max(34, thought.position?.y ?? 38, 38)
+    };
+  };
+
   const links = useMemo(() => {
     const map = new Map(thoughts.map((t) => [t.id, t]));
     const allLinks = thoughts
@@ -25,8 +35,8 @@ export default function ThoughtSpace({
 
         return {
           id: `${parent.id}-${thought.id}`,
-          from: parent.position,
-          to: thought.position,
+          from: getThoughtDisplayPosition(parent),
+          to: getThoughtDisplayPosition(thought),
           visible: selectedRelated || index % 2 === 0,
           selectedRelated
         };
@@ -40,10 +50,11 @@ export default function ThoughtSpace({
     const childThought = thoughts.find((thought) => thought.id === birthThoughtId);
     if (!childThought) return null;
 
+    const childPosition = getThoughtDisplayPosition(childThought);
     const anchorX = 50;
     const anchorY = 92;
-    const dx = childThought.position.x - anchorX;
-    const dy = childThought.position.y - anchorY;
+    const dx = childPosition.x - anchorX;
+    const dy = childPosition.y - anchorY;
     const length = Math.sqrt(dx * dx + dy * dy);
     const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
 
@@ -149,16 +160,15 @@ export default function ThoughtSpace({
         const isBirthThought = thought.id === birthThoughtId;
         const isRootThought = !thought.parentId;
         const isChildThought = Boolean(thought.parentId);
-        const isFirstThought = thoughts.length > 0 && thought.id === thoughts[0].id;
-        const safePosition = isFirstThought ? { x: 50, y: 32 } : thought.position;
+        const displayPosition = getThoughtDisplayPosition(thought);
 
         return (
           <button
             key={thought.id}
             className={`mot-orb mot-thought-orb ${selected ? "mot-orb-selected" : ""} ${isChildThought ? "mot-orb-child" : ""} ${isRootThought ? "mot-orb-root" : ""} ${isBirthThought && (birthPhase === "spawn" || birthPhase === "connected") ? "mot-orb-born" : ""}`}
             style={{
-              left: `${safePosition.x}%`,
-              top: `${safePosition.y}%`
+              left: `${displayPosition.x}%`,
+              top: `${displayPosition.y}%`
             }}
             onClick={() => {
               onSelectThought(thought.id);
@@ -175,12 +185,25 @@ export default function ThoughtSpace({
           >
             <span className="mot-orb-core" />
             <span className="mot-orb-ring" />
-            {showText ? (
-              <span className="mot-orb-text">
-                {thought.text.length > 24 ? `${thought.text.slice(0, 24)}…` : thought.text}
-              </span>
-            ) : null}
           </button>
+        );
+      })}
+
+      {thoughts.map((thought) => {
+        if (visibleTextThoughtId !== thought.id) return null;
+        const displayPosition = getThoughtDisplayPosition(thought);
+
+        return (
+          <span
+            key={`${thought.id}-text`}
+            className="mot-orb-text"
+            style={{
+              left: `clamp(12px, ${displayPosition.x}%, calc(100% - 12px))`,
+              top: `calc(${displayPosition.y}% + 18px)`
+            }}
+          >
+            {thought.text}
+          </span>
         );
       })}
     </div>

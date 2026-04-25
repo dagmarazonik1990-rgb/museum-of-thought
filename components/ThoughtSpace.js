@@ -24,6 +24,29 @@ export default function ThoughtSpace({
     };
   };
 
+  const getOrbRadius = (thought) => (thought.parentId ? 26 : 28);
+
+  const getDynamicSpacing = () => {
+    if (typeof window === "undefined") return 16;
+    if (window.innerWidth < 480) return 20;
+    if (window.innerWidth < 768) return 16;
+    return 12;
+  };
+
+  const getTextPillStyle = (thought) => {
+    const displayPosition = getThoughtDisplayPosition(thought);
+    const orbRadius = getOrbRadius(thought);
+    const dynamicSpacing = getDynamicSpacing();
+    const minDistanceGuard = orbRadius + 14;
+    const pillOffset = Math.max(orbRadius + dynamicSpacing, minDistanceGuard);
+
+    return {
+      left: `clamp(12px, ${displayPosition.x}%, calc(100% - 12px))`,
+      top: `${displayPosition.y}%`,
+      "--mot-pill-offset": `${pillOffset}px`
+    };
+  };
+
   const links = useMemo(() => {
     const map = new Map(thoughts.map((t) => [t.id, t]));
     const allLinks = thoughts
@@ -191,16 +214,12 @@ export default function ThoughtSpace({
 
       {thoughts.map((thought) => {
         if (visibleTextThoughtId !== thought.id) return null;
-        const displayPosition = getThoughtDisplayPosition(thought);
 
         return (
           <span
             key={`${thought.id}-text`}
             className="mot-orb-text"
-            style={{
-              left: `clamp(12px, ${displayPosition.x}%, calc(100% - 12px))`,
-              top: `calc(${displayPosition.y}% + 18px)`
-            }}
+            style={getTextPillStyle(thought)}
           >
             {thought.text}
           </span>

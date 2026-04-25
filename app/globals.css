@@ -720,6 +720,41 @@ a {
   animation: breatheRing 4.2s ease-in-out infinite;
 }
 
+.mot-orb-ripple {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -50%) scale(0.72);
+  border-radius: 999px;
+  border: 1px solid rgba(173, 225, 255, 0.32);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mot-orb-ripple-active {
+  animation: orbRippleOut 0.54s ease-out;
+}
+
+.mot-interaction-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(224, 237, 255, 0.7);
+  background: rgba(7, 11, 22, 0.38);
+  border: 1px solid rgba(168, 184, 255, 0.1);
+  border-radius: 999px;
+  padding: 5px 9px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  animation: interactionHintIn 0.55s ease;
+  z-index: 2;
+}
+
 .mot-orb-text {
   position: absolute;
   --mot-pill-offset: 42px;
@@ -768,6 +803,7 @@ a {
     0 0 15px rgba(155, 236, 255, 0.74),
     0 0 28px rgba(143, 120, 255, 0.32),
     0 0 42px rgba(112, 221, 255, 0.22);
+  animation: orbChildCorePulse 6.4s ease-in-out infinite;
 }
 
 .mot-orb-child .mot-orb-ring {
@@ -779,7 +815,14 @@ a {
     0 0 36px rgba(143, 120, 255, 0.2);
   animation:
     breatheRing 4.2s ease-in-out infinite,
-    orbChildBreath 4.7s ease-in-out infinite;
+    orbChildBreath 4.7s ease-in-out infinite,
+    orbChildScale 6.4s ease-in-out infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mot-orb-child:hover .mot-orb-ripple {
+    animation: orbRippleOut 0.6s ease-out;
+  }
 }
 
 .mot-orb-born {
@@ -1215,6 +1258,56 @@ a {
   }
 }
 
+@keyframes orbChildCorePulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow:
+      0 0 14px rgba(155, 236, 255, 0.64),
+      0 0 26px rgba(143, 120, 255, 0.28),
+      0 0 38px rgba(112, 221, 255, 0.2);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.04);
+    box-shadow:
+      0 0 18px rgba(160, 242, 255, 0.74),
+      0 0 33px rgba(143, 120, 255, 0.34),
+      0 0 46px rgba(112, 221, 255, 0.26);
+  }
+}
+
+@keyframes orbChildScale {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes orbRippleOut {
+  0% {
+    opacity: 0.28;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.36);
+  }
+}
+
+@keyframes interactionHintIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 @keyframes textPillIn {
   from {
     opacity: 0;
@@ -1313,9 +1406,12 @@ a {
   .mot-orb-trigger.is-composing .mot-empty-orb,
   .mot-empty-orb-birth,
   .mot-orb-ring,
+  .mot-orb-ripple,
   .mot-orb-born,
   .mot-birth-line,
-  .mot-orb-text {
+  .mot-orb-text,
+  .mot-interaction-hint,
+  .mot-orb-child .mot-orb-core {
     animation: none !important;
   }
 }

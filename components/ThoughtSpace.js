@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+const INTERACTION_HINT_KEY = "mot-orb-interaction-hint-dismissed-v1";
+
 export default function ThoughtSpace({
   thoughts,
   selectedThoughtId,
@@ -11,8 +13,11 @@ export default function ThoughtSpace({
   birthThoughtId
 }) {
   const containerRef = useRef(null);
+  const rippleTimeoutRef = useRef(null);
   const [dragState, setDragState] = useState(null);
   const [visibleTextThoughtId, setVisibleTextThoughtId] = useState(null);
+  const [showInteractionHint, setShowInteractionHint] = useState(false);
+  const [rippleThoughtId, setRippleThoughtId] = useState(null);
 
   const getThoughtDisplayPosition = (thought) => {
     const isFirstThought = thoughts.length > 0 && thought.id === thoughts[0].id;
@@ -99,6 +104,42 @@ export default function ThoughtSpace({
     window.addEventListener("pointerdown", handleOutsidePointer);
     return () => window.removeEventListener("pointerdown", handleOutsidePointer);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hasSeenHint = window.localStorage.getItem(INTERACTION_HINT_KEY) === "1";
+    setShowInteractionHint(!hasSeenHint);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rippleTimeoutRef.current) {
+        window.clearTimeout(rippleTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  function triggerRipple(thoughtId) {
+    setRippleThoughtId(thoughtId);
+    if (rippleTimeoutRef.current) {
+      window.clearTimeout(rippleTimeoutRef.current);
+    }
+    rippleTimeoutRef.current = window.setTimeout(() => {
+      setRippleThoughtId(null);
+    }, 540);
+  }
+
+  function dismissInteractionHint() {
+    if (!showInteractionHint || typeof window === "undefined") return;
+    window.localStorage.setItem(INTERACTION_HINT_KEY, "1");
+    setShowInteractionHint(false);
+  }
+
+  function revealThought(thoughtId) {
+    onSelectThought(thoughtId);
+    setVisibleTextThoughtId(thoughtId);
+    dismissInteractionHint();
+  }
 
   function toPercentPosition(clientX, clientY) {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -194,23 +235,34 @@ export default function ThoughtSpace({
               top: `${displayPosition.y}%`
             }}
             onClick={() => {
-              onSelectThought(thought.id);
-              setVisibleTextThoughtId(thought.id);
+              revealThought(thought.id);
             }}
             onPointerUp={() => {
               if (!selectedThoughtId || visibleTextThoughtId !== thought.id) {
-                onSelectThought(thought.id);
-                setVisibleTextThoughtId(thought.id);
+                revealThought(thought.id);
               }
             }}
-            onPointerDown={(e) => handlePointerDown(e, thought.id)}
+            onPointerDown={(e) => {
+              handlePointerDown(e, thought.id);
+              triggerRipple(thought.id);
+            }}
             title={thought.text}
           >
             <span className="mot-orb-core" />
             <span className="mot-orb-ring" />
+            <span
+              className={`mot-orb-ripple ${rippleThoughtId === thought.id ? "mot-orb-ripple-active" : ""}`}
+              aria-hidden
+            />
           </button>
         );
       })}
+
+      {showInteractionHint && thoughts.length > 0 ? (
+        <span className="mot-interaction-hint" aria-live="polite">
+          Tap to reveal
+        </span>
+      ) : null}
 
       {thoughts.map((thought) => {
         if (visibleTextThoughtId !== thought.id) return null;

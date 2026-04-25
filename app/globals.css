@@ -674,14 +674,24 @@ a {
 .mot-orb {
   position: absolute;
   transform: translate(-50%, -50%);
-  min-width: 96px;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
   max-width: 180px;
   border: none;
+  border-radius: 999px;
   background: transparent;
   color: var(--text);
   padding: 0;
+  opacity: 1;
   contain: layout paint;
-  z-index: 2;
+  z-index: 3;
+}
+
+.mot-thought-orb {
+  min-width: 56px;
+  min-height: 56px;
 }
 
 .mot-orb-core {

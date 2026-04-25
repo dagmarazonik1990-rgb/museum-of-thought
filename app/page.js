@@ -93,8 +93,8 @@ export default function HomePage() {
         : clusteredPositionNear(parent.position, siblingCount)
       : isFirstThought
         ? {
-            x: 50 + Math.round(Math.random() * 6 - 3),
-            y: 42 + Math.round(Math.random() * 6 - 3)
+            x: 50,
+            y: 32
           }
         : {
             x: 50 + Math.round(Math.random() * 6 - 3),

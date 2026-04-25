@@ -722,7 +722,8 @@ a {
 
 .mot-orb-text {
   position: absolute;
-  transform: translateX(-50%);
+  --mot-pill-offset: 42px;
+  transform: translate(-50%, var(--mot-pill-offset));
   display: inline-block;
   padding: 10px 12px;
   border-radius: 14px;
@@ -1217,11 +1218,11 @@ a {
 @keyframes textPillIn {
   from {
     opacity: 0;
-    transform: translateY(3px);
+    transform: translate(-50%, calc(var(--mot-pill-offset) + 6px));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, var(--mot-pill-offset));
   }
 }
 

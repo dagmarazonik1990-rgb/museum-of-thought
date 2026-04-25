@@ -486,6 +486,7 @@ a {
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 0;
 }
 
 .mot-link-line {
@@ -680,6 +681,7 @@ a {
   color: var(--text);
   padding: 0;
   contain: layout paint;
+  z-index: 2;
 }
 
 .mot-orb-core {
@@ -741,23 +743,23 @@ a {
 }
 
 .mot-orb-child .mot-orb-core {
-  width: 18px;
-  height: 18px;
-  opacity: 0.98;
-  filter: brightness(1.08) saturate(1.06);
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  filter: brightness(1.16) saturate(1.12);
   box-shadow:
-    0 0 12px rgba(155, 236, 255, 0.66),
-    0 0 24px rgba(143, 120, 255, 0.26),
-    0 0 36px rgba(112, 221, 255, 0.16);
+    0 0 15px rgba(155, 236, 255, 0.74),
+    0 0 28px rgba(143, 120, 255, 0.32),
+    0 0 42px rgba(112, 221, 255, 0.22);
 }
 
 .mot-orb-child .mot-orb-ring {
-  width: 36px;
-  height: 36px;
-  border-color: rgba(162, 220, 255, 0.4);
+  width: 40px;
+  height: 40px;
+  border-color: rgba(172, 228, 255, 0.58);
   box-shadow:
-    0 0 18px rgba(122, 214, 255, 0.22),
-    0 0 32px rgba(143, 120, 255, 0.14);
+    0 0 20px rgba(122, 214, 255, 0.34),
+    0 0 36px rgba(143, 120, 255, 0.2);
   animation:
     breatheRing 4.2s ease-in-out infinite,
     orbChildBreath 4.7s ease-in-out infinite;
@@ -765,6 +767,8 @@ a {
 
 .mot-orb-born {
   animation: thoughtBirthIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 1;
+  z-index: 4;
 }
 
 .mot-birth-line {
@@ -778,6 +782,7 @@ a {
   opacity: 0;
   pointer-events: none;
   animation: birthLineIn 0.34s ease 0.2s forwards;
+  z-index: 1;
 }
 
 .mot-empty-panel {
@@ -1161,7 +1166,7 @@ a {
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% - 3px)) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

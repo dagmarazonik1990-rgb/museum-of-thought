@@ -804,25 +804,56 @@ a {
   width: 20px;
   height: 20px;
   opacity: 1;
-  filter: brightness(1.16) saturate(1.12);
+  filter: brightness(1.1) saturate(1.06);
+  background:
+    radial-gradient(circle at 40% 36%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 253, 255, 0.92) 22%, rgba(146, 226, 255, 0.78) 52%, rgba(136, 126, 255, 0.52) 80%, rgba(136, 126, 255, 0.08) 100%);
   box-shadow:
-    0 0 15px rgba(155, 236, 255, 0.74),
-    0 0 28px rgba(143, 120, 255, 0.32),
-    0 0 42px rgba(112, 221, 255, 0.22);
+    0 0 16px rgba(170, 241, 255, 0.72),
+    0 0 30px rgba(151, 136, 255, 0.34),
+    0 0 52px rgba(112, 221, 255, 0.24);
   animation: orbChildCorePulse 6.4s ease-in-out infinite;
 }
 
 .mot-orb-child .mot-orb-ring {
   width: 40px;
   height: 40px;
-  border-color: rgba(172, 228, 255, 0.58);
+  border-color: rgba(180, 230, 255, 0.34);
   box-shadow:
-    0 0 20px rgba(122, 214, 255, 0.34),
-    0 0 36px rgba(143, 120, 255, 0.2);
+    inset 0 0 12px rgba(192, 236, 255, 0.12),
+    0 0 18px rgba(122, 214, 255, 0.2),
+    0 0 30px rgba(143, 120, 255, 0.14);
   animation:
     breatheRing 4.2s ease-in-out infinite,
-    orbChildBreath 4.7s ease-in-out infinite,
-    orbChildScale 6.4s ease-in-out infinite;
+    orbChildBreath 5.2s ease-in-out infinite;
+}
+
+.mot-orb-child {
+  animation: orbChildIdle 8.2s ease-in-out infinite;
+}
+
+.mot-orb-child::before {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 52px;
+  height: 52px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(148, 226, 255, 0.16) 0%, rgba(148, 226, 255, 0.08) 42%, rgba(148, 226, 255, 0) 74%);
+  filter: blur(1px);
+  opacity: 0.78;
+}
+
+.mot-orb-child .mot-orb-ripple {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: radial-gradient(circle, rgba(203, 248, 255, 0.3) 0%, rgba(177, 231, 255, 0.18) 46%, rgba(177, 231, 255, 0) 72%);
+}
+
+.mot-orb-child .mot-orb-ripple-active {
+  animation: orbChildTapGlow 0.44s ease-out;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1269,26 +1300,26 @@ a {
   100% {
     transform: translate(-50%, -50%) scale(1);
     box-shadow:
-      0 0 14px rgba(155, 236, 255, 0.64),
-      0 0 26px rgba(143, 120, 255, 0.28),
-      0 0 38px rgba(112, 221, 255, 0.2);
+      0 0 14px rgba(170, 241, 255, 0.64),
+      0 0 27px rgba(151, 136, 255, 0.26),
+      0 0 42px rgba(112, 221, 255, 0.2);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.04);
+    transform: translate(-50%, -50%) scale(1.03);
     box-shadow:
-      0 0 18px rgba(160, 242, 255, 0.74),
-      0 0 33px rgba(143, 120, 255, 0.34),
-      0 0 46px rgba(112, 221, 255, 0.26);
+      0 0 18px rgba(180, 244, 255, 0.76),
+      0 0 36px rgba(151, 136, 255, 0.34),
+      0 0 54px rgba(112, 221, 255, 0.3);
   }
 }
 
-@keyframes orbChildScale {
+@keyframes orbChildIdle {
   0%,
   100% {
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.04);
+    transform: translate(-50%, -50%) scale(1.025);
   }
 }
 
@@ -1300,6 +1331,21 @@ a {
   100% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(1.36);
+  }
+}
+
+@keyframes orbChildTapGlow {
+  0% {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+  40% {
+    opacity: 0.42;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.08);
   }
 }
 
@@ -1417,6 +1463,7 @@ a {
   .mot-birth-line,
   .mot-orb-text,
   .mot-interaction-hint,
+  .mot-orb-child,
   .mot-orb-child .mot-orb-core {
     animation: none !important;
   }

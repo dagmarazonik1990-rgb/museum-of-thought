@@ -164,7 +164,9 @@ a {
 .mot-compose-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 4, 10, 0.1);
+  background:
+    radial-gradient(circle at 50% 76%, rgba(112, 221, 255, 0.08), rgba(2, 4, 10, 0) 38%),
+    rgba(2, 4, 10, 0.18);
   z-index: 1;
   pointer-events: none;
 }
@@ -251,10 +253,9 @@ a {
   background: transparent;
   color: var(--muted);
   padding: 0;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  opacity: 0.55;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  opacity: 0.62;
 }
 
 .mot-reset-link:hover {
@@ -266,7 +267,8 @@ a {
   margin-top: 0;
   padding-top: 0;
   gap: 20px;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  opacity: 0.72;
 }
 
 .mot-topbar {
@@ -603,12 +605,15 @@ a {
 
 .mot-composer-ritual {
   width: min(620px, calc(100vw - 24px));
-  margin: -14px auto 0;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(18, 24, 46, 0.06), rgba(18, 24, 46, 0.015));
-  border: 1px solid rgba(168, 184, 255, 0.05);
-  backdrop-filter: blur(10px);
+  margin: -18px auto 0;
+  padding: 10px 14px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(14, 20, 40, 0.3), rgba(14, 20, 40, 0.1)),
+    radial-gradient(circle at 50% -40%, rgba(210, 236, 255, 0.2), rgba(210, 236, 255, 0) 58%);
+  border: 1px solid rgba(188, 207, 255, 0.16);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
   animation: composerFloatIn 0.36s ease;
   transform-origin: 50% 82%;
   transition: opacity 0.28s ease, transform 0.3s ease, filter 0.3s ease;
@@ -627,7 +632,7 @@ a {
   text-align: center;
   max-width: 600px;
   font-size: clamp(18px, 2.2vw, 20px);
-  padding: 4px 8px;
+  padding: 8px 12px 6px;
   outline: none;
   resize: none;
   box-shadow: none;
@@ -641,10 +646,10 @@ a {
 
 
 .mot-composer-submit {
-  margin: 6px auto 0;
+  margin: 4px auto 2px;
   display: block;
-  border: 1px solid rgba(168, 184, 255, 0.28);
-  background: rgba(8, 12, 26, 0.72);
+  border: 1px solid rgba(184, 204, 255, 0.36);
+  background: rgba(9, 13, 28, 0.5);
   color: rgba(236, 242, 255, 0.94);
   border-radius: 999px;
   padding: 8px 18px;
@@ -742,8 +747,7 @@ a {
   bottom: 54px;
   transform: translateX(-50%);
   font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: rgba(224, 237, 255, 0.7);
   background: rgba(7, 11, 22, 0.38);
   border: 1px solid rgba(168, 184, 255, 0.1);
@@ -760,14 +764,16 @@ a {
   --mot-pill-offset: 42px;
   transform: translate(-50%, var(--mot-pill-offset));
   display: inline-block;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(11, 15, 28, 0.72);
-  border: 1px solid rgba(168, 184, 255, 0.1);
-  backdrop-filter: blur(18px);
+  padding: 8px 12px;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(16, 22, 39, 0.82), rgba(12, 18, 34, 0.72));
+  border: 1px solid rgba(208, 224, 255, 0.18);
+  backdrop-filter: blur(8px);
   color: #eef2ff;
-  font-size: 0.82rem;
-  line-height: 1.35;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
   width: max-content;
   max-width: min(72vw, 320px);
   white-space: normal;

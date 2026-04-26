@@ -18,6 +18,10 @@ export default function ThoughtSpace({
   const [visibleTextThoughtId, setVisibleTextThoughtId] = useState(null);
   const [showInteractionHint, setShowInteractionHint] = useState(false);
   const [rippleThoughtId, setRippleThoughtId] = useState(null);
+  const hasChildThought = useMemo(
+    () => thoughts.some((thought) => Boolean(thought.parentId)),
+    [thoughts]
+  );
 
   const getThoughtDisplayPosition = (thought) => {
     const isFirstThought = thoughts.length > 0 && thought.id === thoughts[0].id;
@@ -108,8 +112,8 @@ export default function ThoughtSpace({
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hasSeenHint = window.localStorage.getItem(INTERACTION_HINT_KEY) === "1";
-    setShowInteractionHint(!hasSeenHint);
-  }, []);
+    setShowInteractionHint(!hasSeenHint && hasChildThought);
+  }, [hasChildThought]);
 
   useEffect(() => {
     return () => {
@@ -135,10 +139,13 @@ export default function ThoughtSpace({
     setShowInteractionHint(false);
   }
 
-  function revealThought(thoughtId) {
+  function revealThought(thought) {
+    const thoughtId = thought.id;
     onSelectThought(thoughtId);
     setVisibleTextThoughtId(thoughtId);
-    dismissInteractionHint();
+    if (thought.parentId) {
+      dismissInteractionHint();
+    }
   }
 
   function toPercentPosition(clientX, clientY) {
@@ -235,11 +242,11 @@ export default function ThoughtSpace({
               top: `${displayPosition.y}%`
             }}
             onClick={() => {
-              revealThought(thought.id);
+              revealThought(thought);
             }}
             onPointerUp={() => {
               if (!selectedThoughtId || visibleTextThoughtId !== thought.id) {
-                revealThought(thought.id);
+                revealThought(thought);
               }
             }}
             onPointerDown={(e) => {
@@ -258,9 +265,9 @@ export default function ThoughtSpace({
         );
       })}
 
-      {showInteractionHint && thoughts.length > 0 ? (
+      {showInteractionHint && hasChildThought ? (
         <span className="mot-interaction-hint" aria-live="polite">
-          Tap to reveal
+          It’s there
         </span>
       ) : null}
 

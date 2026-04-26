@@ -208,7 +208,7 @@ export default function HomePage() {
 
       <header className="mot-minimal-header">
         <h1 className="mot-minimal-title">Museum of Thought</h1>
-        <p className="mot-minimal-copy">Drop the first thought.</p>
+        <p className="mot-minimal-copy">A place for a single thought.</p>
       </header>
 
       {hasThoughts ? (
@@ -267,7 +267,7 @@ export default function HomePage() {
             className="mot-textarea mot-textarea-ritual"
             rows={3}
             autoFocus
-            placeholder="Write one honest thought."
+            placeholder="Let it surface."
           />
           <button
             type="button"
@@ -283,7 +283,7 @@ export default function HomePage() {
 
       {hasThoughts ? (
         <button className="mot-reset-link" onClick={handleResetAll}>
-          Reset
+          Start again
         </button>
       ) : null}
 
